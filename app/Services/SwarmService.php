@@ -14,11 +14,13 @@ use App\Exceptions\ValidationException;
 
 class SwarmService
 {
-    private SwarmModel   $swarmModel;
-    private CombModel    $combModel;
-    private UserModel    $userModel;
-    private ProductModel $productModel;
+    private SwarmModel    $swarmModel;
+    private CombModel     $combModel;
+    private UserModel     $userModel;
+    private ProductModel  $productModel;
     private WalletService $walletService;
+    private ?DrawService   $drawService;
+    private ?RefundService $refundService;
 
     public function __construct(
         ?SwarmModel    $swarmModel    = null,
@@ -26,12 +28,16 @@ class SwarmService
         ?UserModel     $userModel     = null,
         ?ProductModel  $productModel  = null,
         ?WalletService $walletService = null,
+        ?DrawService   $drawService   = null,
+        ?RefundService $refundService = null,
     ) {
         $this->swarmModel    = $swarmModel    ?? new SwarmModel();
         $this->combModel     = $combModel     ?? new CombModel();
         $this->userModel     = $userModel     ?? new UserModel();
         $this->productModel  = $productModel  ?? new ProductModel();
         $this->walletService = $walletService ?? new WalletService();
+        $this->drawService   = $drawService;
+        $this->refundService = $refundService;
     }
 
     // -------------------------------------------------------------------------
@@ -99,7 +105,7 @@ class SwarmService
     // -------------------------------------------------------------------------
 
     /**
-     * Cancels a Swarm. Refund processing is handled by Task 10.
+     * Cancels a Swarm and processes refunds for all members.
      *
      * @throws ValidationException when swarm is in a non-cancellable status
      * @throws NotFoundException   when swarm not found
@@ -114,6 +120,12 @@ class SwarmService
         }
 
         $this->swarmModel->transitionStatus($swarmId, 'cancelled');
+
+        // Process refunds for all members
+        if ($this->refundService === null) {
+            $this->refundService = new RefundService();
+        }
+        $this->refundService->processCancelledSwarm($swarmId);
 
         return $this->swarmModel->findById($swarmId);
     }
@@ -265,6 +277,17 @@ class SwarmService
 
         if ($swarmFilled) {
             $this->swarmModel->transitionStatus($swarmId, 'full');
+
+            // Trigger the draw automatically when the swarm fills
+            if ($this->drawService === null) {
+                $this->drawService = new DrawService();
+            }
+            try {
+                $this->drawService->triggerDraw($swarmId);
+            } catch (\Throwable) {
+                // Draw failure should not break the purchase response.
+                // The draw can be retried manually via admin.
+            }
         } elseif ($updatedSwarm['status'] === 'active') {
             // (j) Check filling_fast threshold
             $threshold = (int) $updatedSwarm['filling_fast_threshold'];

@@ -115,4 +115,21 @@ class CombModel extends BaseModel
             [$swarmId, $combNumber]
         );
     }
+
+    /**
+     * Marks all combs in a swarm as refunded.
+     */
+    public function markRefundedBySwarm(int $swarmId): bool
+    {
+        $stmt = $this->db->prepare(
+            "UPDATE `combs`
+                SET `refunded` = 1,
+                    `refunded_at` = NOW()
+              WHERE `swarm_id` = ?
+                AND `refunded` = 0"
+        );
+        $stmt->execute([$swarmId]);
+
+        return $stmt->rowCount() > 0;
+    }
 }

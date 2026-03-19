@@ -376,6 +376,72 @@ class WalletServiceTest extends TestCase
     }
 
     // -------------------------------------------------------------------------
+    // Security: deduct rejects zero or negative amounts
+    // -------------------------------------------------------------------------
+
+    public function testDeductRejectsNegativeAmount(): void
+    {
+        $wallet = $this->fakeWallet();
+        [$service] = $this->buildService([$wallet]);
+
+        $this->expectException(ValidationException::class);
+        $service->deduct(42, -5.0, 'swarm', 7);
+    }
+
+    public function testDeductRejectsZeroAmount(): void
+    {
+        $wallet = $this->fakeWallet();
+        [$service] = $this->buildService([$wallet]);
+
+        $this->expectException(ValidationException::class);
+        $service->deduct(42, 0.0, 'swarm', 7);
+    }
+
+    // -------------------------------------------------------------------------
+    // Security: creditDeposit rejects zero or negative amounts
+    // -------------------------------------------------------------------------
+
+    public function testCreditDepositRejectsNegativeAmount(): void
+    {
+        $wallet = $this->fakeWallet();
+        [$service] = $this->buildService([$wallet]);
+
+        $this->expectException(ValidationException::class);
+        $service->creditDeposit(42, -10.0, 'pi_test_neg');
+    }
+
+    public function testCreditDepositRejectsZeroAmount(): void
+    {
+        $wallet = $this->fakeWallet();
+        [$service] = $this->buildService([$wallet]);
+
+        $this->expectException(ValidationException::class);
+        $service->creditDeposit(42, 0.0, 'pi_test_zero');
+    }
+
+    // -------------------------------------------------------------------------
+    // Security: creditBonus rejects zero or negative amounts
+    // -------------------------------------------------------------------------
+
+    public function testCreditBonusRejectsNegativeAmount(): void
+    {
+        $wallet = $this->fakeWallet();
+        [$service] = $this->buildService([$wallet]);
+
+        $this->expectException(ValidationException::class);
+        $service->creditBonus(42, -5.0);
+    }
+
+    public function testCreditBonusRejectsZeroAmount(): void
+    {
+        $wallet = $this->fakeWallet();
+        [$service] = $this->buildService([$wallet]);
+
+        $this->expectException(ValidationException::class);
+        $service->creditBonus(42, 0.0);
+    }
+
+    // -------------------------------------------------------------------------
     // per_page is capped at 50
     // -------------------------------------------------------------------------
 

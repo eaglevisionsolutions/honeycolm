@@ -50,6 +50,7 @@ $routes = [
     'GET /swarms/{id}'               => [\App\Controllers\SwarmController::class, 'show'],
     'POST /swarms/{id}/combs'        => [\App\Controllers\SwarmController::class, 'purchaseCombs'],
     'GET /swarms/{id}/odds'          => [\App\Controllers\SwarmController::class, 'odds'],
+    'GET /swarms/{id}/result'        => [\App\Controllers\DrawController::class, 'publicResult'],
 
     // Swarm admin routes (all protected by AdminAuthMiddleware)
     'GET /admin/swarms'              => [\App\Controllers\AdminSwarmController::class, 'index'],
@@ -58,6 +59,11 @@ $routes = [
     'PUT /admin/swarms/{id}'         => [\App\Controllers\AdminSwarmController::class, 'update'],
     'POST /admin/swarms/{id}/publish' => [\App\Controllers\AdminSwarmController::class, 'publish'],
     'POST /admin/swarms/{id}/cancel'  => [\App\Controllers\AdminSwarmController::class, 'cancel'],
+
+    // Draw admin routes (AdminAuthMiddleware)
+    'GET /admin/draws'                   => [\App\Controllers\DrawController::class, 'adminIndex'],
+    'GET /admin/draws/{swarmId}'         => [\App\Controllers\DrawController::class, 'adminShow'],
+    'PUT /admin/draws/{swarmId}/shipped' => [\App\Controllers\DrawController::class, 'markShipped'],
 
     // Wallet routes (member auth required)
     'GET /wallet'              => [\App\Controllers\WalletController::class, 'balance'],

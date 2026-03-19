@@ -229,10 +229,19 @@ class StripeServiceTest extends TestCase
 
     public function testWithdrawalFailsWhenAmountExceedsDepositBalance(): void
     {
-        $wallet        = $this->fakeWallet(['deposit_balance' => '30.00']);
-        $walletService = $this->mockWalletService($wallet);
+        $wallet = $this->fakeWallet(['deposit_balance' => '30.00']);
 
-        $service = new TestableStripeService($walletService);
+        /** @var MockObject&WalletModel $walletModel */
+        $walletModel = $this->createMock(WalletModel::class);
+        $walletModel->method('findByUserId')->willReturn([$wallet]);
+
+        // deductDepositWithLock throws when deposit < amount
+        $walletModel->method('deductDepositWithLock')
+            ->willThrowException(new ValidationException(
+                ['amount' => 'Withdrawal amount exceeds your available deposit balance.']
+            ));
+
+        $service = new TestableStripeService(null, null, null, null, null, $walletModel);
 
         $this->expectException(ValidationException::class);
 
@@ -334,11 +343,107 @@ class StripeServiceTest extends TestCase
         /** @var MockObject&WalletModel $walletModel */
         $walletModel = $this->createMock(WalletModel::class);
         $walletModel->method('findByUserId')->willReturn([$wallet]);
+        $walletModel->method('deductDepositWithLock')->willReturn(75.0);
 
-        $service = new TestableStripeService($walletService, $model, null, null, null, $walletModel);
+        /** @var MockObject&WalletTransactionModel $txModel */
+        $txModel = $this->createMock(WalletTransactionModel::class);
+        $txModel->method('record')->willReturn(1);
+
+        $service = new TestableStripeService($walletService, $model, $txModel, null, null, $walletModel);
         $result  = $service->requestWithdrawal(42, 25.0);
 
         $this->assertSame(7, $result['withdrawal_id']);
+    }
+
+    // -------------------------------------------------------------------------
+    // Security: withdrawal atomically deducts deposit via deductDepositWithLock
+    // -------------------------------------------------------------------------
+
+    public function testWithdrawalDeductsDepositAtomically(): void
+    {
+        $wallet        = $this->fakeWallet(['deposit_balance' => '100.00']);
+        $walletService = $this->mockWalletService($wallet);
+
+        /** @var MockObject&WithdrawalRequestModel $model */
+        $model = $this->createMock(WithdrawalRequestModel::class);
+        $model->expects($this->once())
+            ->method('insert')
+            ->willReturn(9);
+
+        /** @var MockObject&WalletModel $walletModel */
+        $walletModel = $this->createMock(WalletModel::class);
+        $walletModel->method('findByUserId')->willReturn([$wallet]);
+
+        // The critical assertion: deductDepositWithLock MUST be called
+        // with the wallet ID and the withdrawal amount
+        $walletModel->expects($this->once())
+            ->method('deductDepositWithLock')
+            ->with(1, 25.0)
+            ->willReturn(75.0);
+
+        /** @var MockObject&WalletTransactionModel $txModel */
+        $txModel = $this->createMock(WalletTransactionModel::class);
+
+        // A wallet_transaction row must be recorded for audit trail
+        $txModel->expects($this->once())
+            ->method('record')
+            ->with($this->callback(function (array $row): bool {
+                return $row['type']   === 'withdrawal_request'
+                    && $row['bucket'] === 'deposit'
+                    && $row['amount'] === 25.0
+                    && $row['balance_after'] === 75.0
+                    && $row['reference_type'] === 'withdrawal'
+                    && $row['reference_id'] === 9;
+            }))
+            ->willReturn(1);
+
+        $service = new TestableStripeService($walletService, $model, $txModel, null, null, $walletModel);
+        $result  = $service->requestWithdrawal(42, 25.0);
+
+        $this->assertSame(9, $result['withdrawal_id']);
+    }
+
+    // -------------------------------------------------------------------------
+    // Security: H-1 — if bonus credit fails, deposit credit must also roll back
+    // so that on webhook retry the idempotency check doesn't cause bonus loss
+    // -------------------------------------------------------------------------
+
+    public function testWebhookRollsBackDepositWhenBonusCreditFails(): void
+    {
+        /** @var MockObject&WalletTransactionModel $txModel */
+        $txModel = $this->createMock(WalletTransactionModel::class);
+        $txModel->method('findByStripePaymentId')->willReturn(false);
+
+        /** @var MockObject&WalletService $walletService */
+        $walletService = $this->createMock(WalletService::class);
+
+        // Deposit credit succeeds
+        $walletService->expects($this->once())
+            ->method('creditDeposit')
+            ->with(42, 50.0, 'pi_test_partial');
+
+        // Bonus credit fails with a transient error
+        $walletService->expects($this->once())
+            ->method('creditBonus')
+            ->with(42, 5.0)
+            ->willThrowException(new \RuntimeException('Simulated transient DB error'));
+
+        $service = new FakeWebhookStripeService($walletService, null, $txModel);
+
+        $event = $this->buildCheckoutSessionEvent([
+            'user_id' => '42',
+            'tier'    => '50',
+            'deposit' => '50',
+            'bonus'   => '5',
+        ], 'pi_test_partial');
+
+        $service->injectFakeEvent($event);
+
+        // The exception should propagate so Stripe retries the webhook
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Simulated transient DB error');
+
+        $service->handleWebhook('{}', 'sig');
     }
 
     // -------------------------------------------------------------------------

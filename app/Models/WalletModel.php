@@ -103,6 +103,61 @@ class WalletModel extends BaseModel
     }
 
     /**
+     * Atomically deduct `$amount` from the deposit bucket only using SELECT FOR UPDATE.
+     * Used for withdrawals where bonus balance must not be touched.
+     *
+     * @return float The new deposit_balance after deduction
+     * @throws ValidationException when deposit_balance < $amount or wallet not found
+     */
+    public function deductDepositWithLock(int $walletId, float $amount): float
+    {
+        $this->db->beginTransaction();
+
+        try {
+            $stmt = $this->db->prepare(
+                "SELECT `id`, `deposit_balance`
+                 FROM `wallets`
+                 WHERE `id` = ?
+                 FOR UPDATE"
+            );
+            $stmt->execute([$walletId]);
+            $wallet = $stmt->fetch();
+
+            if ($wallet === false) {
+                $this->db->rollBack();
+                throw new ValidationException(['wallet' => 'Wallet not found.']);
+            }
+
+            $deposit = (float) $wallet['deposit_balance'];
+
+            if ($deposit < $amount) {
+                $this->db->rollBack();
+                throw new ValidationException(
+                    ['amount' => 'Withdrawal amount exceeds your available deposit balance.']
+                );
+            }
+
+            $newDeposit = $deposit - $amount;
+
+            $update = $this->db->prepare(
+                "UPDATE `wallets`
+                 SET `deposit_balance` = ?, `updated_at` = NOW()
+                 WHERE `id` = ?"
+            );
+            $update->execute([$newDeposit, $walletId]);
+
+            $this->db->commit();
+
+            return $newDeposit;
+        } catch (\Throwable $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            throw $e;
+        }
+    }
+
+    /**
      * Add to the deposit bucket.
      */
     public function creditDeposit(int $walletId, float $amount): bool

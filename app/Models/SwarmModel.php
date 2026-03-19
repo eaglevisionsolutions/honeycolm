@@ -129,11 +129,14 @@ class SwarmModel extends BaseModel
     public function transitionStatus(int $swarmId, string $newStatus): bool
     {
         $timestampField = match ($newStatus) {
-            'active'       => 'published_at',
-            'cancelled'    => 'cancelled_at',
-            'full'         => null,
-            'filling_fast' => null,
-            default        => null,
+            'active'        => 'published_at',
+            'cancelled'     => 'cancelled_at',
+            'draw_complete' => 'drawn_at',
+            'shipped'       => 'shipped_at',
+            'full'          => null,
+            'filling_fast'  => null,
+            'expired'       => null,
+            default         => null,
         };
 
         if ($timestampField !== null) {
@@ -220,6 +223,19 @@ class SwarmModel extends BaseModel
         return $this->queryOne(
             "SELECT * FROM `swarms` WHERE `id` = ? AND `status` IN ('active','filling_fast') LIMIT 1",
             [$id]
+        );
+    }
+
+    /**
+     * Returns swarms whose deadline has passed and are still active/filling_fast.
+     */
+    public function findExpired(): array
+    {
+        return $this->query(
+            "SELECT * FROM `swarms`
+              WHERE `status` IN ('active', 'filling_fast')
+                AND `deadline` < NOW()
+              ORDER BY `deadline` ASC"
         );
     }
 }

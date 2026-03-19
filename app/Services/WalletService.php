@@ -78,6 +78,10 @@ class WalletService
      */
     public function deduct(int $userId, float $amount, string $referenceType, int $referenceId): array
     {
+        if ($amount <= 0) {
+            throw new ValidationException(['amount' => 'Deduction amount must be positive.']);
+        }
+
         $wallet   = $this->requireWallet($userId);
         $walletId = (int) $wallet['id'];
 
@@ -123,6 +127,10 @@ class WalletService
      */
     public function creditDeposit(int $userId, float $amount, string $stripePaymentId): bool
     {
+        if ($amount <= 0) {
+            throw new ValidationException(['amount' => 'Credit amount must be positive.']);
+        }
+
         $wallet   = $this->requireWallet($userId);
         $walletId = (int) $wallet['id'];
 
@@ -152,6 +160,10 @@ class WalletService
      */
     public function creditBonus(int $userId, float $amount): bool
     {
+        if ($amount <= 0) {
+            throw new ValidationException(['amount' => 'Credit amount must be positive.']);
+        }
+
         $wallet   = $this->requireWallet($userId);
         $walletId = (int) $wallet['id'];
 

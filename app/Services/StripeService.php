@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Config\Database;
 use App\Config\Env;
 use App\Exceptions\AuthException;
 use App\Exceptions\NotFoundException;
@@ -121,6 +122,9 @@ class StripeService
     /**
      * Submit a withdrawal request for a user.
      * Validates that amount >= 10 and does not exceed the deposit_balance.
+     * Atomically deducts the amount from the deposit bucket via SELECT FOR UPDATE
+     * to prevent multiple concurrent withdrawal requests from draining funds.
+     * Records a wallet_transaction row for audit trail.
      *
      * @return array{withdrawal_id: int}
      * @throws ValidationException
@@ -133,20 +137,17 @@ class StripeService
             );
         }
 
-        $balance = $this->walletService->getBalance($userId);
-
-        if ($amount > $balance['deposit_balance']) {
-            throw new ValidationException(
-                ['amount' => 'Withdrawal amount exceeds your available deposit balance.']
-            );
-        }
-
         // Look up the wallet_id required by the withdrawal_requests table
         $wallets = $this->walletModel->findByUserId($userId);
         if (empty($wallets)) {
             throw new NotFoundException("No wallet found for user #{$userId}.");
         }
         $walletId = (int) $wallets[0]['id'];
+
+        // Atomically verify deposit balance and deduct using SELECT FOR UPDATE.
+        // This prevents race conditions where multiple withdrawal requests could
+        // each pass a balance check before any deduction occurs.
+        $newBalance = $this->walletModel->deductDepositWithLock($walletId, $amount);
 
         $id = $this->withdrawalRequestModel->insert([
             'user_id'   => $userId,
@@ -155,12 +156,28 @@ class StripeService
             'status'    => 'pending',
         ]);
 
+        // Record audit trail in wallet_transactions
+        $this->transactionModel->record([
+            'wallet_id'      => $walletId,
+            'type'           => 'withdrawal_request',
+            'bucket'         => 'deposit',
+            'amount'         => $amount,
+            'balance_after'  => $newBalance,
+            'reference_type' => 'withdrawal',
+            'reference_id'   => $id,
+        ]);
+
         return ['withdrawal_id' => $id];
     }
 
     /**
      * Process a checkout.session.completed event.
      * Reads metadata, checks idempotency, then credits the wallet.
+     *
+     * Idempotency is enforced at two levels:
+     *  1. Application-level SELECT check (fast-path for obvious duplicates)
+     *  2. Database-level UNIQUE index on stripe_payment_id (catches race conditions
+     *     where two concurrent webhook deliveries both pass the SELECT check)
      */
     private function handleCheckoutSessionCompleted(\Stripe\Checkout\Session $session): void
     {
@@ -174,17 +191,48 @@ class StripeService
             return;
         }
 
-        // Idempotency check: if this payment_intent has already been credited, skip.
+        // Idempotency check (fast path): if this payment_intent has already been credited, skip.
         if ($this->hasBeenCredited($paymentIntentId)) {
             return;
         }
 
-        if ($deposit > 0) {
-            $this->walletService->creditDeposit($userId, $deposit, $paymentIntentId);
-        }
+        // Credit the wallet inside a single DB transaction so that deposit + bonus
+        // either both succeed or both roll back. This prevents a partial-credit state
+        // where the deposit row (carrying stripe_payment_id) is committed but the
+        // bonus credit fails — which would cause the idempotency check to skip the
+        // bonus on webhook retry (H-1 fix).
+        //
+        // If a concurrent webhook delivery already inserted a row with this
+        // stripe_payment_id, the UNIQUE index will trigger a PDOException which
+        // we catch and silently ignore (the funds were already credited).
+        $db = Database::connection();
+        $db->beginTransaction();
 
-        if ($bonus > 0) {
-            $this->walletService->creditBonus($userId, $bonus);
+        try {
+            if ($deposit > 0) {
+                $this->walletService->creditDeposit($userId, $deposit, $paymentIntentId);
+            }
+
+            if ($bonus > 0) {
+                $this->walletService->creditBonus($userId, $bonus);
+            }
+
+            $db->commit();
+        } catch (\PDOException $e) {
+            if ($db->inTransaction()) {
+                $db->rollBack();
+            }
+            // Error code 23000 = integrity constraint violation (duplicate key)
+            if ($e->getCode() === '23000' && str_contains($e->getMessage(), 'uq_stripe_payment_id')) {
+                // Duplicate webhook delivery — funds already credited. Safe to ignore.
+                return;
+            }
+            throw $e;
+        } catch (\Throwable $e) {
+            if ($db->inTransaction()) {
+                $db->rollBack();
+            }
+            throw $e;
         }
     }
 
