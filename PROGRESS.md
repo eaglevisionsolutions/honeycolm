@@ -18,10 +18,10 @@
 
 ---
 
-## Overall Progress: 20 of 29 tasks complete (69%)
+## Overall Progress: 21 of 29 tasks complete (72%)
 
 ```
-[=====================---------]  69%
+[======================--------]  72%
 ```
 
 ---
@@ -57,10 +57,10 @@ All backend API tasks and security reviews are complete. The entire backend is b
 | 16 | Active Swarms Browse Page (filters, SwarmCard grid, offline cache) | Done |
 | 17 | Swarm Detail Page (gallery, odds, countdown, Comb purchase) | Done |
 | 18 | How It Works, Past Winners, and FAQ Pages | Done |
-| 19 | **Member Account Dashboard** | **Pending** |
+| 19 | Member Account Dashboard (entered swarms, win history, account settings) | Done |
 | 20 | **Nectar Wallet and Top-Up Page** | **Pending** |
 
-**What's left:** Two authenticated member pages — the account dashboard and the Nectar wallet/top-up page.
+**What's left:** One authenticated member page — the Nectar wallet and top-up page.
 
 ---
 
@@ -95,16 +95,16 @@ These run after all frontend pages are built.
 
 | Commit | Description |
 |--------|-------------|
-| _(next)_ | Task 18: How It Works, Past Winners, and FAQ pages |
+| `5d3ffd1` | Task 19: Member Account Dashboard — backend API + frontend controller |
+| `89bfb7c` | Fix nginx 502, service worker 404, and manifest 404 |
+| `ebf4478` | Fix SPA routing — HomeController no longer overwrites all pages |
+| `8194ba9` | Task 18: How It Works, Past Winners, and FAQ pages — routing, CSS, and integration |
 | `5a02c02` | Task 12: Security review swarm & payment — fix double-refund vulnerability |
-| `b0b49cc` | Fix asset 404s — remove double /public/ prefix from HTML paths and fix nginx config |
-| `2917f4e` | Task 11: Email notification system — queue, templates, and lifecycle hooks |
 
 ---
 
 ## What's Next
 
-1. **Task 19** — Member Account Dashboard
-2. **Task 20** — Nectar Wallet and Top-Up Page
-3. **Tasks 24–27** — Remaining admin panel pages
-4. **Tasks 28–29** — SEO metadata and final documentation
+1. **Task 20** — Nectar Wallet and Top-Up Page
+2. **Tasks 24–27** — Remaining admin panel pages
+3. **Tasks 28–29** — SEO metadata and final documentation
