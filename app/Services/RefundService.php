@@ -69,6 +69,28 @@ class RefundService
         // Mark combs as refunded
         $this->combModel->markRefundedBySwarm($swarmId);
 
+        // Queue refund_notice email for each affected user
+        try {
+            $emailService = new EmailService();
+            foreach ($refundedUsers as $userId => $_) {
+                // Sum total refund per user from combs
+                $userTotal = 0.0;
+                foreach ($grouped as $key => $amount) {
+                    [$gUserId] = explode(':', $key);
+                    if ((int) $gUserId === $userId) {
+                        $userTotal += $amount;
+                    }
+                }
+
+                $emailService->queue($userId, 'refund_notice', [
+                    'swarm_title'   => $swarm['title'] ?? 'a Swarm',
+                    'refund_amount' => number_format($userTotal, 2),
+                ]);
+            }
+        } catch (\Throwable) {
+            // Email queuing must never block the refund flow
+        }
+
         return [
             'refunded_users' => count($refundedUsers),
             'total_refunded' => $totalRefunded,

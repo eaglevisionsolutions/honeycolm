@@ -11,6 +11,7 @@ use App\Models\ProductModel;
 use App\Config\Database;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\ValidationException;
+use App\Config\Env;
 
 class SwarmService
 {
@@ -21,6 +22,7 @@ class SwarmService
     private WalletService $walletService;
     private ?DrawService   $drawService;
     private ?RefundService $refundService;
+    private ?EmailService  $emailService;
 
     public function __construct(
         ?SwarmModel    $swarmModel    = null,
@@ -30,6 +32,7 @@ class SwarmService
         ?WalletService $walletService = null,
         ?DrawService   $drawService   = null,
         ?RefundService $refundService = null,
+        ?EmailService  $emailService  = null,
     ) {
         $this->swarmModel    = $swarmModel    ?? new SwarmModel();
         $this->combModel     = $combModel     ?? new CombModel();
@@ -38,6 +41,7 @@ class SwarmService
         $this->walletService = $walletService ?? new WalletService();
         $this->drawService   = $drawService;
         $this->refundService = $refundService;
+        $this->emailService  = $emailService;
     }
 
     // -------------------------------------------------------------------------
@@ -96,6 +100,23 @@ class SwarmService
         }
 
         $this->swarmModel->transitionStatus($swarmId, 'active');
+
+        // Queue swarm_launch notifications for all members in the swarm's region
+        try {
+            $emailService = $this->emailService ?? new EmailService();
+            $regionMembers = $this->userModel->findByRegion($swarm['region_id']);
+            $appUrl = (string) Env::get('APP_URL', 'https://honeycolm.ca');
+
+            foreach ($regionMembers as $member) {
+                $emailService->queue((int) $member['id'], 'swarm_launch', [
+                    'swarm_title' => $swarm['title'],
+                    'swarm_url'   => "{$appUrl}/{$swarm['region_id']}/swarms/{$swarmId}",
+                    'comb_price'  => $swarm['comb_price'],
+                ]);
+            }
+        } catch (\Throwable) {
+            // Email queuing must never block the publish flow
+        }
 
         return $this->swarmModel->findById($swarmId);
     }
@@ -296,6 +317,30 @@ class SwarmService
 
             if ($remainingPct < $threshold) {
                 $this->swarmModel->transitionStatus($swarmId, 'filling_fast');
+
+                // Queue filling_warning for all members who hold Combs in this Swarm
+                try {
+                    $emailService = $this->emailService ?? new EmailService();
+                    $appUrl = (string) Env::get('APP_URL', 'https://honeycolm.ca');
+                    $allCombs = $this->combModel->findBySwarm($swarmId);
+                    $notifiedUsers = [];
+
+                    foreach ($allCombs as $comb) {
+                        $combUserId = (int) $comb['user_id'];
+                        if (isset($notifiedUsers[$combUserId])) {
+                            continue;
+                        }
+                        $notifiedUsers[$combUserId] = true;
+
+                        $emailService->queue($combUserId, 'filling_warning', [
+                            'swarm_title'     => $swarm['title'],
+                            'combs_remaining' => $remainingAfter,
+                            'swarm_url'       => "{$appUrl}/{$swarm['region_id']}/swarms/{$swarmId}",
+                        ]);
+                    }
+                } catch (\Throwable) {
+                    // Email queuing must never block the purchase flow
+                }
             }
         }
 

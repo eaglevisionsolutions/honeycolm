@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\DrawModel;
 use App\Models\SwarmModel;
 use App\Models\CombModel;
+use App\Models\UserModel;
 use App\Models\PlatformSettingModel;
 use App\Config\Database;
 use App\Exceptions\NotFoundException;
@@ -128,7 +129,24 @@ class DrawService
             throw $e;
         }
 
-        return $this->drawModel->findById($drawId);
+        $draw = $this->drawModel->findById($drawId);
+
+        // Queue win_confirmation email to the winner
+        try {
+            $winnerUser = (new UserModel())->findById((int) $winnerComb['user_id']);
+            $product    = $swarm['title'] ?? 'the honey';
+
+            (new EmailService())->queue((int) $winnerComb['user_id'], 'win_confirmation', [
+                'winner_name'          => $winnerUser['name'] ?? '',
+                'item_name'            => $product,
+                'random_org_verify_url' => $verifyUrl,
+                'winning_comb_number'  => $winningNumber,
+            ]);
+        } catch (\Throwable) {
+            // Email queuing must never block the draw flow
+        }
+
+        return $draw;
     }
 
     /**

@@ -65,6 +65,9 @@ $routes = [
     'GET /admin/draws/{swarmId}'         => [\App\Controllers\DrawController::class, 'adminShow'],
     'PUT /admin/draws/{swarmId}/shipped' => [\App\Controllers\DrawController::class, 'markShipped'],
 
+    // Notification admin routes (AdminAuthMiddleware)
+    'GET /admin/notifications' => [\App\Controllers\NotificationController::class, 'index'],
+
     // Wallet routes (member auth required)
     'GET /wallet'              => [\App\Controllers\WalletController::class, 'balance'],
     'GET /wallet/transactions' => [\App\Controllers\WalletController::class, 'transactions'],
