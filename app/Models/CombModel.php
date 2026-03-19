@@ -123,6 +123,29 @@ class CombModel extends BaseModel
     }
 
     /**
+     * Returns all swarms a user has entered, with combs held and swarm details.
+     */
+    public function findSwarmsByUser(int $userId): array
+    {
+        return $this->query(
+            "SELECT s.`id`, s.`title`, s.`status`, s.`comb_count`, s.`combs_sold`,
+                    s.`comb_price`, s.`deadline`,
+                    p.`name` AS product_name, p.`retail_value`,
+                    (SELECT pi.`image_url` FROM `product_images` pi WHERE pi.`product_id` = p.`id` ORDER BY pi.`sort_order` ASC, pi.`id` ASC LIMIT 1) AS primary_image,
+                    COUNT(c.`id`) AS combs_held,
+                    SUM(c.`price_paid`) AS total_spent
+               FROM `combs` c
+               JOIN `swarms` s ON s.`id` = c.`swarm_id`
+               JOIN `products` p ON p.`id` = s.`product_id`
+              WHERE c.`user_id` = ?
+                AND c.`refunded` = 0
+              GROUP BY s.`id`
+              ORDER BY s.`deadline` DESC",
+            [$userId]
+        );
+    }
+
+    /**
      * Returns the winning comb for a swarm by comb_number.
      */
     public function getWinnerComb(int $swarmId, int $combNumber): array|false

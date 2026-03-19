@@ -68,6 +68,13 @@ $routes = [
     // Notification admin routes (AdminAuthMiddleware)
     'GET /admin/notifications' => [\App\Controllers\NotificationController::class, 'index'],
 
+    // Account routes (member auth required)
+    'GET /account/swarms'      => [\App\Controllers\AccountController::class, 'mySwarms'],
+    'GET /account/wins'        => [\App\Controllers\AccountController::class, 'myWins'],
+    'GET /account/profile'     => [\App\Controllers\AccountController::class, 'profile'],
+    'PUT /account/profile'     => [\App\Controllers\AccountController::class, 'updateProfile'],
+    'PUT /account/password'    => [\App\Controllers\AccountController::class, 'updatePassword'],
+
     // Wallet routes (member auth required)
     'GET /wallet'              => [\App\Controllers\WalletController::class, 'balance'],
     'GET /wallet/transactions' => [\App\Controllers\WalletController::class, 'transactions'],
@@ -124,6 +131,11 @@ if (
 // Run AuthMiddleware for member-protected routes
 $memberProtectedRoutes = [
     'POST /swarms/{id}/combs',
+    'GET /account/swarms',
+    'GET /account/wins',
+    'GET /account/profile',
+    'PUT /account/profile',
+    'PUT /account/password',
     'GET /wallet',
     'GET /wallet/transactions',
     'POST /payment/checkout',

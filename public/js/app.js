@@ -65,6 +65,9 @@ App._initRouteController = function () {
     } else if (path === '/ca/faq') {
         const ctrl = new App.Controllers.FaqController();
         ctrl.init();
+    } else if (path === '/ca/account') {
+        const ctrl = new App.Controllers.AccountDashboardController();
+        ctrl.init();
     }
     // Additional route controllers will be added here as they are built.
     // The HomeController currently self-boots via its own $(function) block.

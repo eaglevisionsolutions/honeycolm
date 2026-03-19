@@ -2091,3 +2091,358 @@ label {
         padding: 16px;
     }
 }
+
+/* =========================================
+   Account Dashboard
+   ========================================= */
+.account-page {
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+.account-page__title {
+    font-family: var(--font-hero);
+    font-size: 36px;
+    margin-bottom: 24px;
+    color: var(--hive-brown);
+}
+
+/* Offline badge */
+.offline-cache-badge {
+    background: var(--pollen-yellow);
+    color: var(--hive-brown);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+/* Tabs */
+.account-tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid var(--pollen-yellow);
+    margin-bottom: 32px;
+}
+
+.account-tabs__btn {
+    font-family: var(--font-ui);
+    font-size: 15px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    color: var(--hive-brown);
+    opacity: 0.6;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: opacity 0.15s, border-color 0.15s;
+}
+
+.account-tabs__btn:hover {
+    opacity: 0.85;
+}
+
+.account-tabs__btn--active {
+    opacity: 1;
+    font-weight: 700;
+    border-bottom-color: var(--honey-gold);
+}
+
+/* Empty state with CTA */
+.account-empty {
+    text-align: center;
+    padding: 48px 24px;
+}
+
+.account-empty .btn-primary {
+    display: inline-flex;
+}
+
+/* Swarm cards */
+.account-swarms {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.account-swarm-card {
+    display: flex;
+    gap: 20px;
+    background: var(--worker-white);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    text-decoration: none;
+    color: var(--color-text);
+    box-shadow: 0 2px 12px rgba(61, 28, 2, 0.08);
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.account-swarm-card:hover {
+    box-shadow: 0 4px 20px rgba(61, 28, 2, 0.15);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.account-swarm-card__img {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--pollen-yellow);
+}
+
+.account-swarm-card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.account-swarm-card__img--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-swarm-card__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.account-swarm-card__title {
+    font-family: var(--font-ui);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.account-swarm-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.account-swarm-card__deadline {
+    font-size: 13px;
+    color: var(--amber-dark);
+    font-weight: 500;
+}
+
+.account-swarm-card__stats {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.account-swarm-card__fill {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* Small progress bar variant */
+.progress-bar-track--sm {
+    height: 6px;
+    border-radius: 3px;
+}
+
+/* Win cards */
+.account-wins {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.account-win-card {
+    display: flex;
+    gap: 20px;
+    background: var(--worker-white);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(61, 28, 2, 0.08);
+}
+
+.account-win-card__img {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.account-win-card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.account-win-card__body {
+    flex: 1;
+}
+
+.account-win-card__title {
+    font-family: var(--font-ui);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.account-win-card__retail {
+    font-size: 14px;
+    color: var(--amber-dark);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.account-win-card__date {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.account-win-card__shipping {
+    margin-bottom: 4px;
+}
+
+.account-win-card__verify {
+    font-size: 13px;
+    color: var(--amber-dark);
+    text-decoration: underline;
+}
+
+/* Settings forms */
+.account-settings {
+    max-width: 560px;
+}
+
+.account-settings__section {
+    margin-bottom: 40px;
+}
+
+.account-settings__section--logout {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--pollen-yellow);
+}
+
+.account-settings__heading {
+    font-family: var(--font-ui);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--hive-brown);
+}
+
+.account-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--hive-brown);
+}
+
+.form-input {
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 10px 14px;
+    border: 1px solid rgba(61, 28, 2, 0.2);
+    border-radius: 10px;
+    background: var(--worker-white);
+    color: var(--color-text);
+    transition: border-color 0.15s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--honey-gold);
+    box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
+}
+
+.field-error {
+    font-size: 13px;
+    color: #B71C1C;
+    min-height: 18px;
+}
+
+/* Danger ghost button */
+.btn-ghost--danger {
+    color: #B71C1C;
+    border-color: #B71C1C;
+}
+
+.btn-ghost--danger:hover {
+    background: rgba(183, 28, 28, 0.08);
+}
+
+/* =========================================
+   Account Dashboard — Responsive
+   ========================================= */
+@media (max-width: 768px) {
+    .account-page__title {
+        font-size: 28px;
+    }
+
+    .account-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .account-tabs__btn {
+        font-size: 14px;
+        padding: 10px 16px;
+        white-space: nowrap;
+    }
+
+    .account-swarm-card {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .account-swarm-card__img {
+        width: 100%;
+        height: 160px;
+    }
+
+    .account-win-card {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .account-win-card__img {
+        width: 100%;
+        height: 160px;
+    }
+}
+
+@media (max-width: 480px) {
+    .account-page {
+        padding-top: 24px;
+        padding-bottom: 40px;
+    }
+
+    .account-page__title {
+        font-size: 24px;
+    }
+
+    .account-swarm-card__stats {
+        flex-direction: column;
+        gap: 4px;
+    }
+}

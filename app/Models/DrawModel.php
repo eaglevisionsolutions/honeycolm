@@ -52,6 +52,26 @@ class DrawModel extends BaseModel
     }
 
     /**
+     * Returns all draws won by a specific user, with swarm and product info.
+     */
+    public function findByWinner(int $userId): array
+    {
+        return $this->query(
+            "SELECT d.`id`, d.`swarm_id`, d.`winning_comb_number`, d.`drawn_at`,
+                    d.`random_org_verify_url`, d.`shipping_status`,
+                    s.`title` AS swarm_title, s.`comb_count`, s.`comb_price`,
+                    p.`name` AS product_name, p.`retail_value`,
+                    (SELECT pi.`image_url` FROM `product_images` pi WHERE pi.`product_id` = p.`id` ORDER BY pi.`sort_order` ASC, pi.`id` ASC LIMIT 1) AS primary_image
+               FROM `draws` d
+               JOIN `swarms` s ON s.`id` = d.`swarm_id`
+               JOIN `products` p ON p.`id` = s.`product_id`
+              WHERE d.`winner_user_id` = ?
+              ORDER BY d.`drawn_at` DESC",
+            [$userId]
+        );
+    }
+
+    /**
      * Returns all draws with swarm and product info for admin listing.
      */
     public function findAllWithSwarmInfo(): array
