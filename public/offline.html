@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Offline</title>
+    <link rel="stylesheet" href="/public/css/app.css">
+    <style>
+        body { display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
+        .offline-container { max-width: 400px; padding: 2rem; }
+        .offline-icon { font-size: 4rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📶</div>
+        <h1>You're Offline</h1>
+        <p>It looks like you've lost your internet connection. Please check your network and try again.</p>
+        <p>Any changes you made will sync automatically when you reconnect.</p>
+        <button onclick="window.location.reload()">Try Again</button>
+    </div>
+</body>
+</html>

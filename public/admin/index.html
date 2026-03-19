@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dashboard — Honeycolm Admin</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Admin design system -->
+    <link rel="stylesheet" href="/admin/css/admin.css">
+</head>
+<body class="admin-body">
+
+    <!-- Auth guard: redirect to login if no admin JWT -->
+    <script src="/admin/js/auth.js"></script>
+    <script>
+        'use strict';
+        App.Admin.AuthService.guard();
+    </script>
+
+    <!-- =============================================
+         SIDEBAR
+         ============================================= -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <span class="sidebar-logo-icon">&#9824;</span>
+            <span class="sidebar-logo-text">LOGO HERE</span>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav" id="sidebar-nav" aria-label="Admin navigation">
+
+            <a href="/admin/" data-page="dashboard" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">&#9632;</span>
+                <span class="sidebar-label">Dashboard</span>
+            </a>
+
+            <a href="/admin/swarms.html" data-page="swarms" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">&#9650;</span>
+                <span class="sidebar-label">Swarms</span>
+            </a>
+
+            <a href="/admin/create-swarm.html" data-page="create-swarm" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">&#43;</span>
+                <span class="sidebar-label">Create Swarm</span>
+            </a>
+
+            <a href="/admin/catalog.html" data-page="catalog" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">&#9783;</span>
+                <span class="sidebar-label">Product Catalog</span>
+            </a>
+
+            <a href="/admin/members.html" data-page="members" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">&#9786;</span>
+                <span class="sidebar-label">Members</span>
+            </a>
+
+            <a href="/admin/withdrawals.html" data-page="withdrawals" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">&#9650;</span>
+                <span class="sidebar-label">Withdrawals</span>
+            </a>
+
+            <a href="/admin/draws.html" data-page="draws" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">&#9679;</span>
+                <span class="sidebar-label">Draws</span>
+            </a>
+
+            <a href="/admin/finance.html" data-page="finance" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">&#9650;</span>
+                <span class="sidebar-label">Finance</span>
+            </a>
+
+            <a href="/admin/settings.html" data-page="settings" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">&#9881;</span>
+                <span class="sidebar-label">Settings</span>
+            </a>
+
+        </nav>
+
+        <!-- Staff identity (bottom of sidebar) -->
+        <div class="sidebar-staff">
+            <div class="sidebar-staff-avatar" aria-hidden="true">A</div>
+            <div class="sidebar-staff-info">
+                <div class="sidebar-staff-name">Admin</div>
+                <div class="sidebar-staff-role">Staff Member</div>
+            </div>
+        </div>
+
+        <!-- Collapse toggle -->
+        <button
+            class="sidebar-collapse-btn"
+            id="sidebar-collapse"
+            aria-label="Toggle sidebar"
+            title="Toggle sidebar"
+        >&#8249;</button>
+
+    </aside>
+
+    <!-- =============================================
+         MAIN AREA
+         ============================================= -->
+    <div class="admin-main">
+
+        <!-- Header -->
+        <header class="admin-header">
+
+            <!-- Hamburger (mobile only — shown via CSS) -->
+            <button
+                class="header-hamburger"
+                id="header-hamburger"
+                aria-label="Open navigation menu"
+            >&#9776;</button>
+
+            <div class="header-right">
+                <span id="header-staff-name" class="header-staff"></span>
+                <button id="logout-btn" class="btn-admin-ghost">Sign out</button>
+            </div>
+
+        </header>
+
+        <!-- Page content injected here by page-specific controllers -->
+        <main id="admin-root" class="admin-content"></main>
+
+    </div>
+
+    <!-- Mobile nav backdrop -->
+    <div class="admin-sidebar-backdrop" id="admin-sidebar-backdrop" aria-hidden="true"></div>
+
+    <!-- Shell initialisation -->
+    <script src="/admin/js/shell.js"></script>
+    <script>
+        'use strict';
+        document.addEventListener('DOMContentLoaded', function () {
+            App.Admin.Shell.init();
+        });
+    </script>
+
+    <!-- Page-specific controllers are appended here by each admin page -->
+    <script src="/admin/js/controllers/DashboardController.js"></script>
+    <script src="/admin/js/controllers/SwarmManagementController.js"></script>
+    <script>
+        'use strict';
+        document.addEventListener('DOMContentLoaded', function () {
+            var path = window.location.pathname;
+            if (path.match(/\/admin\/swarms/)) {
+                var swarmCtrl = new App.Admin.Controllers.SwarmManagementController();
+                swarmCtrl.init();
+            } else {
+                var dashboard = new App.Admin.Controllers.DashboardController();
+                dashboard.init();
+            }
+        });
+    </script>
+
+</body>
+</html>

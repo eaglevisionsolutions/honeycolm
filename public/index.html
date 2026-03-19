@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3D1C02">
+    <meta name="description" content="Honeycolm — The hive pools together. One lucky bee takes home the honey.">
+    <title>Honeycolm — Hive in. Win big.</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/public/icons/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/app.css">
+</head>
+<body>
+
+    <!-- Offline Banner -->
+    <div id="offline-banner" class="offline-banner" style="display:none;">You are offline. Changes will sync when reconnected.</div>
+
+    <!-- Notification Container -->
+    <div id="notifications" aria-live="polite"></div>
+
+    <!-- Site Navigation -->
+    <header class="site-nav" id="site-nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">LOGO HERE</a>
+            <nav class="nav-links" id="nav-links">
+                <a href="/ca/swarms">Active Swarms</a>
+                <a href="/ca/how-it-works">How It Works</a>
+                <a href="/ca/past-winners">Past Winners</a>
+            </nav>
+            <div class="nav-actions">
+                <div id="region-switcher"></div>
+                <div id="nav-wallet" class="nav-wallet" style="display:none;"></div>
+                <div id="nav-auth" class="nav-auth">
+                    <a href="/ca/login" class="btn-ghost btn-sm">Login</a>
+                    <a href="/ca/register" class="btn-primary btn-sm">Join the Hive</a>
+                </div>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+        </div>
+    </header>
+
+    <!-- Mobile Nav Drawer -->
+    <div class="nav-drawer" id="nav-drawer">
+        <div class="nav-drawer__overlay" id="nav-drawer-overlay"></div>
+        <div class="nav-drawer__panel">
+            <button class="nav-drawer__close" id="nav-drawer-close" aria-label="Close menu">&times;</button>
+            <a href="/ca/swarms" class="nav-drawer__link">Active Swarms</a>
+            <a href="/ca/how-it-works" class="nav-drawer__link">How It Works</a>
+            <a href="/ca/past-winners" class="nav-drawer__link">Past Winners</a>
+            <a href="/ca/faq" class="nav-drawer__link">FAQ</a>
+            <div class="nav-drawer__actions">
+                <a href="/ca/login" class="btn-ghost">Login</a>
+                <a href="/ca/register" class="btn-primary">Join the Hive</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trust Bar -->
+    <div class="trust-bar">
+        <span>&#x1F41D; Draws powered by Random.org</span>
+        <span>&#x1F36F; Real winners, real products</span>
+        <span>&#x1F512; Stripe secured</span>
+        <span>&#x1F1E8;&#x1F1E6; Proudly Canadian</span>
+    </div>
+
+    <!-- Main App Root -->
+    <main id="app-root"></main>
+
+    <!-- Site Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <span class="footer-logo">LOGO HERE</span>
+                <p class="footer-tagline">Hive in. Win big.</p>
+            </div>
+            <nav class="footer-nav">
+                <a href="/ca/swarms">Active Swarms</a>
+                <a href="/ca/how-it-works">How It Works</a>
+                <a href="/ca/past-winners">Past Winners</a>
+                <a href="/ca/faq">FAQ</a>
+            </nav>
+            <p class="footer-legal">Honeycolm is a Canadian crowd-purchase marketplace incorporated in Ontario.</p>
+            <p class="footer-random">Draws verified by <a href="https://www.random.org" target="_blank" rel="noopener">Random.org</a></p>
+        </div>
+    </footer>
+
+    <!-- jQuery (required) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+
+    <!-- App namespace bootstrap (must be first) -->
+    <script src="/public/js/app.js"></script>
+
+    <!-- Services -->
+    <script src="/public/js/services/ApiService.js"></script>
+    <script src="/public/js/services/SyncService.js"></script>
+    <script src="/public/js/services/AuthService.js"></script>
+
+    <!-- Utilities -->
+    <script src="/public/js/utils/Validator.js"></script>
+    <script src="/public/js/utils/ServiceWorkerUtil.js"></script>
+
+    <!-- Base Controller -->
+    <script src="/public/js/controllers/BaseController.js"></script>
+
+    <!-- Components -->
+    <script src="/public/js/components/SwarmCard.js"></script>
+    <script src="/public/js/components/CountdownTimer.js"></script>
+    <script src="/public/js/components/RegionSwitcher.js"></script>
+
+    <!-- Page Controllers -->
+    <script src="/public/js/controllers/HomeController.js"></script>
+    <script src="/public/js/controllers/ActiveSwarmsController.js"></script>
+    <script src="/public/js/controllers/SwarmDetailController.js"></script>
+
+    <!-- Offline UI handling -->
+    <script>
+        $(document).on('app:offline', function () {
+            $('#offline-banner').show();
+        });
+        $(document).on('app:online', function () {
+            $('#offline-banner').hide();
+        });
+
+        if (!navigator.onLine) {
+            $('#offline-banner').show();
+        }
+
+        // Hamburger nav toggle
+        $('#hamburger').on('click', function () {
+            $('#nav-drawer').addClass('is-open');
+        });
+        $('#nav-drawer-close, #nav-drawer-overlay').on('click', function () {
+            $('#nav-drawer').removeClass('is-open');
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+    "name": "Honeycolm",
+    "short_name": "Honeycolm",
+    "description": "The hive pools together. One lucky bee takes home the honey.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#FFF8E7",
+    "theme_color": "#3D1C02",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "icons": [
+        {
+            "src": "/public/icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/public/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": []
+}

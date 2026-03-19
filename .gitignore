@@ -1,0 +1,53 @@
+# ── Secrets & credentials ───────────────────────────────────────────────────
+.env.local
+.env.*.local
+.env.production
+*.pem
+*.key
+*_rsa
+*_dsa
+*_ed25519
+
+# ── Uploads & storage ───────────────────────────────────────────────────────
+/uploads/
+/storage/
+**/uploads/
+**/storage/
+
+# ── Logs, temp, cache, backups ───────────────────────────────────────────────
+*.log
+/tmp/
+/cache/
+**/.cache/
+*.tmp
+*.bak
+*.swp
+
+# ── Database dumps ───────────────────────────────────────────────────────────
+*.sql
+*.sqlite
+*.sqlite3
+
+# ── Vendor (conditional — only if composer.json present) ────────────────────
+/vendor/
+
+# ── Node (conditional — only if package.json present) ───────────────────────
+/node_modules/
+/dist/
+/build/
+
+# ── PWA build artifacts (uncomment ONLY if build-generated, not hand-authored)
+# /public/sw/workbox-*.js
+# /public/sw/precache-manifest*.js
+
+# ── OS & editor artifacts ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ── RALPH runtime files (not source — regenerated each run) ─────────────────
+/.ralph/visual-gate.txt
+.phpunit.result.cache

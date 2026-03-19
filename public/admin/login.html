@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Staff sign in — Honeycolm Admin</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Admin design system -->
+    <link rel="stylesheet" href="/admin/css/admin.css">
+</head>
+<body class="admin-login-body">
+
+    <div class="login-card">
+
+        <div class="login-logo">LOGO HERE</div>
+        <p class="login-subtitle">Honeycolm Admin Panel</p>
+
+        <h1 class="login-title">Staff sign in</h1>
+
+        <form id="login-form" novalidate>
+
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input
+                    type="email"
+                    id="login-email"
+                    name="email"
+                    required
+                    autocomplete="username"
+                    placeholder="you@honeycolm.ca"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input
+                    type="password"
+                    id="login-password"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                    placeholder="••••••••"
+                >
+            </div>
+
+            <div id="login-error" class="form-error" hidden></div>
+
+            <div class="login-btn-wrap">
+                <button type="submit" class="btn-admin-primary" id="login-submit">
+                    Sign in
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Auth service (no App namespace dependencies needed for login page) -->
+    <script src="/admin/js/auth.js"></script>
+
+    <script>
+        'use strict';
+
+        (function () {
+            // If already authenticated, skip straight to the admin panel
+            if (App.Admin.AuthService.isAuthenticated()) {
+                window.location.href = '/admin/';
+                return;
+            }
+
+            const form        = document.getElementById('login-form');
+            const emailInput  = document.getElementById('login-email');
+            const passInput   = document.getElementById('login-password');
+            const errorEl     = document.getElementById('login-error');
+            const submitBtn   = document.getElementById('login-submit');
+
+            function showError(message) {
+                errorEl.textContent = message;
+                errorEl.hidden = false;
+            }
+
+            function hideError() {
+                errorEl.hidden = true;
+                errorEl.textContent = '';
+            }
+
+            function setLoading(loading) {
+                submitBtn.disabled = loading;
+                submitBtn.textContent = loading ? 'Signing in...' : 'Sign in';
+            }
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                hideError();
+
+                const email    = emailInput.value.trim();
+                const password = passInput.value;
+
+                if (!email || !password) {
+                    showError('Please enter your email and password.');
+                    return;
+                }
+
+                setLoading(true);
+
+                try {
+                    await App.Admin.AuthService.login(email, password);
+                    window.location.href = '/admin/';
+                } catch (err) {
+                    showError(err.message || 'Sign in failed. Please try again.');
+                    setLoading(false);
+                }
+            });
+        }());
+    </script>
+
+</body>
+</html>
