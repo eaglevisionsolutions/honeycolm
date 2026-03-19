@@ -50,4 +50,3 @@ Thumbs.db
 
 # ── RALPH runtime files (not source — regenerated each run) ─────────────────
 /.ralph/visual-gate.txt
-.phpunit.result.cache
