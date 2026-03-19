@@ -79,7 +79,7 @@ class RefundServiceTest extends TestCase
             $this->fakeComb(['id' => 3, 'user_id' => 42, 'comb_number' => 3, 'bucket_source' => 'bonus',   'price_paid' => '5.00']),
         ];
 
-        $combModel->method('findBySwarm')->with(1)->willReturn($combs);
+        $combModel->method('findUnrefundedBySwarm')->with(1)->willReturn($combs);
         $combModel->method('markRefundedBySwarm')->with(1)->willReturn(true);
 
         // Expect two refund calls: one for deposit (10.00), one for bonus (5.00)
@@ -141,7 +141,7 @@ class RefundServiceTest extends TestCase
             $this->fakeComb(['id' => 2, 'user_id' => 99, 'comb_number' => 2, 'bucket_source' => 'bonus',   'price_paid' => '5.00']),
         ];
 
-        $combModel->method('findBySwarm')->with(1)->willReturn($combs);
+        $combModel->method('findUnrefundedBySwarm')->with(1)->willReturn($combs);
         $combModel->method('markRefundedBySwarm')->with(1)->willReturn(true);
 
         $refundCalls = [];
@@ -179,7 +179,7 @@ class RefundServiceTest extends TestCase
         [$service, $swarmModel, $combModel, $walletService] = $this->buildServiceWithMocks();
 
         $swarmModel->method('findById')->with(1)->willReturn($this->fakeSwarm());
-        $combModel->method('findBySwarm')->with(1)->willReturn([]);
+        $combModel->method('findUnrefundedBySwarm')->with(1)->willReturn([]);
 
         // No refund calls should happen
         $walletService->expects($this->never())->method('refund');
@@ -211,7 +211,7 @@ class RefundServiceTest extends TestCase
             ->willReturnCallback(fn(int $id) => $this->fakeSwarm(['id' => $id]));
 
         // Each swarm has 1 comb to refund
-        $combModel->method('findBySwarm')->willReturnCallback(function (int $swarmId): array {
+        $combModel->method('findUnrefundedBySwarm')->willReturnCallback(function (int $swarmId): array {
             return [
                 $this->fakeComb([
                     'swarm_id'      => $swarmId,
@@ -300,7 +300,7 @@ class RefundServiceTest extends TestCase
             $this->fakeComb(['user_id' => 42, 'bucket_source' => 'deposit', 'price_paid' => '5.00']),
         ];
 
-        $combModel->method('findBySwarm')->with(1)->willReturn($combs);
+        $combModel->method('findUnrefundedBySwarm')->with(1)->willReturn($combs);
         $combModel->method('markRefundedBySwarm')->with(1)->willReturn(true);
         $walletService->method('refund')->willReturn(true);
 
@@ -324,5 +324,27 @@ class RefundServiceTest extends TestCase
         $this->expectException(NotFoundException::class);
 
         $service->refundSwarm(999);
+    }
+
+    // -------------------------------------------------------------------------
+    // refundSwarm — double refund prevention (security test)
+    // -------------------------------------------------------------------------
+
+    public function testRefundSwarmSkipsAlreadyRefundedCombs(): void
+    {
+        [$service, $swarmModel, $combModel, $walletService] = $this->buildServiceWithMocks();
+
+        $swarmModel->method('findById')->with(1)->willReturn($this->fakeSwarm());
+
+        // On second call, findUnrefundedBySwarm returns empty (all combs already refunded)
+        $combModel->method('findUnrefundedBySwarm')->with(1)->willReturn([]);
+
+        // No refund calls should happen
+        $walletService->expects($this->never())->method('refund');
+
+        $result = $service->refundSwarm(1);
+
+        $this->assertSame(0, $result['refunded_users']);
+        $this->assertSame(0.0, $result['total_refunded']);
     }
 }

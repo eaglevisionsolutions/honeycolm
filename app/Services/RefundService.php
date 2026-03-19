@@ -35,7 +35,7 @@ class RefundService
     public function refundSwarm(int $swarmId): array
     {
         $swarm = $this->swarmModel->findById($swarmId);
-        $combs = $this->combModel->findBySwarm($swarmId);
+        $combs = $this->combModel->findUnrefundedBySwarm($swarmId);
 
         if (empty($combs)) {
             return ['refunded_users' => 0, 'total_refunded' => 0.0];

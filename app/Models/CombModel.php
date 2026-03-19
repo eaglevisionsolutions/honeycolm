@@ -95,6 +95,23 @@ class CombModel extends BaseModel
     }
 
     /**
+     * Returns only un-refunded combs for a swarm, joined with user name.
+     * Used by RefundService to prevent double-refund.
+     */
+    public function findUnrefundedBySwarm(int $swarmId): array
+    {
+        return $this->query(
+            "SELECT c.*, u.`name` AS user_name
+               FROM `combs` c
+               JOIN `users` u ON u.`id` = c.`user_id`
+              WHERE c.`swarm_id` = ?
+                AND c.`refunded` = 0
+              ORDER BY c.`comb_number` ASC",
+            [$swarmId]
+        );
+    }
+
+    /**
      * Returns combs held by a specific user in a specific swarm.
      */
     public function findByUserAndSwarm(int $userId, int $swarmId): array
