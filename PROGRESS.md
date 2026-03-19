@@ -26,7 +26,7 @@
 
 ---
 
-## Backend API (Tasks 1–13) — 12 of 13 complete
+## Backend API (Tasks 1–13) — 13 of 13 complete
 
 | # | Task | Status |
 |---|------|--------|
@@ -41,10 +41,10 @@
 | 9 | Swarm Engine API (Comb purchase, odds, fill detection) | Done |
 | 10 | Draw Mechanism (Random.org) and Refund Engine | Done |
 | 11 | Email Notification System (queue, templates, lifecycle hooks) | Done |
-| 12 | **Security Review — Swarm Engine and Payments** | **Pending** |
+| 12 | Security Review — Swarm Engine and Payments | Done |
 | 13 | Region Routing System (/ca/ /us/ middleware) | Done |
 
-**What's left:** One security audit covering tasks 8–11 (Comb purchase race conditions, Random.org key protection, refund idempotency, file upload validation).
+All backend API tasks and security reviews are complete. The entire backend is built and audited.
 
 ---
 
@@ -95,16 +95,16 @@ These run after all frontend pages are built.
 
 | Commit | Description |
 |--------|-------------|
+| `5a02c02` | Task 12: Security review swarm & payment — fix double-refund vulnerability |
+| `b0b49cc` | Fix asset 404s — remove double /public/ prefix from HTML paths and fix nginx config |
 | `2917f4e` | Task 11: Email notification system — queue, templates, and lifecycle hooks |
 | `fbd33fa` | Task 7: Security review wallet & payment — fix atomic webhook crediting |
-| `f750b09` | Add Honeycomb PWA app source code |
 
 ---
 
 ## What's Next
 
-1. **Task 12** — Security review of the Swarm engine and payment flows
-2. **Task 18** — How It Works, Past Winners, and FAQ pages
-3. **Tasks 19–20** — Member dashboard and Nectar wallet page
-4. **Tasks 24–27** — Remaining admin panel pages
-5. **Tasks 28–29** — SEO metadata and final documentation
+1. **Task 18** — How It Works, Past Winners, and FAQ pages
+2. **Tasks 19–20** — Member dashboard and Nectar wallet page
+3. **Tasks 24–27** — Remaining admin panel pages
+4. **Tasks 28–29** — SEO metadata and final documentation
