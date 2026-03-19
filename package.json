@@ -1,0 +1,30 @@
+{
+  "name": "honeycomb",
+  "version": "1.0.0",
+  "description": "A complete, production-ready starting point for every Eagle Vision Solutions PWA project. Includes the full RALPH multi-agent build system and the chat-driven project workflow.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest --testPathPattern=tests/Frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eaglevisionsolutions/honeycolm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/eaglevisionsolutions/honeycolm/issues"
+  },
+  "homepage": "https://github.com/eaglevisionsolutions/honeycolm#readme",
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
+    "jquery": "^4.0.0"
+  }
+}

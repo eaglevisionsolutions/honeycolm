@@ -8,7 +8,7 @@
 
 'use strict';
 
-const CACHE_VERSION  = 'v6';
+const CACHE_VERSION  = 'v8';
 const STATIC_CACHE   = `static-${CACHE_VERSION}`;
 const API_CACHE      = `api-${CACHE_VERSION}`;
 
@@ -34,6 +34,9 @@ const STATIC_ASSETS = [
     '/js/controllers/HowItWorksController.js',
     '/js/controllers/PastWinnersController.js',
     '/js/controllers/FaqController.js',
+    '/js/controllers/AccountDashboardController.js',
+    '/js/controllers/LoginController.js',
+    '/js/controllers/RegisterController.js',
 ];
 
 // -------------------------

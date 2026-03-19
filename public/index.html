@@ -120,6 +120,8 @@
     <script src="/js/controllers/PastWinnersController.js"></script>
     <script src="/js/controllers/FaqController.js"></script>
     <script src="/js/controllers/AccountDashboardController.js"></script>
+    <script src="/js/controllers/LoginController.js"></script>
+    <script src="/js/controllers/RegisterController.js"></script>
 
     <!-- Offline UI handling -->
     <script>
@@ -140,6 +142,43 @@
         });
         $('#nav-drawer-close, #nav-drawer-overlay').on('click', function () {
             $('#nav-drawer').removeClass('is-open');
+        });
+
+        // ── Auth state: toggle nav between logged-in / logged-out ──
+        function updateNavAuth() {
+            var auth = App.Services.AuthService.getInstance();
+            if (auth.isLoggedIn()) {
+                $('#nav-auth').html(
+                    '<a href="/ca/account" class="btn-ghost btn-sm">My account</a>'
+                );
+                $('.nav-drawer__actions').html(
+                    '<a href="/ca/account" class="btn-ghost">My account</a>' +
+                    '<button class="btn-ghost btn-ghost--danger" id="nav-logout">Log out</button>'
+                );
+            } else {
+                $('#nav-auth').html(
+                    '<a href="/ca/login" class="btn-ghost btn-sm">Login</a>' +
+                    '<a href="/ca/register" class="btn-primary btn-sm">Join the Hive</a>'
+                );
+                $('.nav-drawer__actions').html(
+                    '<a href="/ca/login" class="btn-ghost">Login</a>' +
+                    '<a href="/ca/register" class="btn-primary">Join the Hive</a>'
+                );
+            }
+        }
+
+        $(document).ready(function () {
+            setTimeout(updateNavAuth, 0);
+        });
+
+        $(document).on('app:auth:login', updateNavAuth);
+        $(document).on('app:auth:logout', function () {
+            updateNavAuth();
+            window.location.href = '/';
+        });
+
+        $(document).on('click', '#nav-logout', function () {
+            App.Services.AuthService.getInstance().logout();
         });
     </script>
 

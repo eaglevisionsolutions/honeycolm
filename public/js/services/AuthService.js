@@ -21,8 +21,10 @@ App.Services.AuthService = class AuthService {
         return result.data;
     }
 
-    async register(name, email, password) {
-        const result = await this._api.post('/auth/register', { name, email, password });
+    async register(name, email, password, homeRegion) {
+        const result = await this._api.post('/auth/register', {
+            name, email, password, home_region: homeRegion
+        });
         this._storeTokens(result.data);
         return result.data;
     }

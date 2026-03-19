@@ -53,6 +53,7 @@ All backend API tasks and security reviews are complete. The entire backend is b
 | # | Task | Status |
 |---|------|--------|
 | 14 | Global Shell and Design System (nav, footer, trust bar, CSS tokens) | Done |
+| 14b | Member Login and Register Pages (auth forms, region select, nav state toggle) | Done |
 | 15 | Homepage (hero, How It Works, Swarm preview grid, winners strip) | Done |
 | 16 | Active Swarms Browse Page (filters, SwarmCard grid, offline cache) | Done |
 | 17 | Swarm Detail Page (gallery, odds, countdown, Comb purchase) | Done |
@@ -95,6 +96,7 @@ These run after all frontend pages are built.
 
 | Commit | Description |
 |--------|-------------|
+| _(uncommitted)_ | Task 14b: Member Login and Register pages — controllers, CSS, nav auth toggle, 50 unit tests |
 | `5d3ffd1` | Task 19: Member Account Dashboard — backend API + frontend controller |
 | `89bfb7c` | Fix nginx 502, service worker 404, and manifest 404 |
 | `ebf4478` | Fix SPA routing — HomeController no longer overwrites all pages |
