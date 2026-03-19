@@ -47,7 +47,10 @@ App.init = function () {
 App._initRouteController = function () {
     const path = window.location.pathname.replace(/\/+$/, '') || '/';
 
-    if (path === '/ca/swarms') {
+    if (path === '/' || path === '/ca' || path === '') {
+        const ctrl = new App.Controllers.HomeController();
+        ctrl.init();
+    } else if (path === '/ca/swarms') {
         const ctrl = new App.Controllers.ActiveSwarmsController();
         ctrl.init();
     } else if (/^\/ca\/swarms\/\d+$/.test(path)) {

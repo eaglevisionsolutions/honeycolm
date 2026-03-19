@@ -341,10 +341,4 @@ App.Controllers.HomeController = class HomeController extends App.Controllers.Ba
     }
 };
 
-// -------------------------
-// Boot on DOM ready
-// -------------------------
-$(function () {
-    const controller = new App.Controllers.HomeController();
-    controller.init();
-});
+// HomeController is now booted by App._initRouteController() for the homepage route only.
