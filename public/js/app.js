@@ -26,7 +26,7 @@ App.init = function () {
     App.Services.SyncService.getInstance().init();
 
     // Register service worker
-    App.Utils.ServiceWorkerUtil.register('/sw.js');
+    App.Utils.ServiceWorkerUtil.register('/sw/sw.js');
 
     if (typeof App.Components.RegionSwitcher !== 'undefined') {
         App.Components.RegionSwitcher.init();
