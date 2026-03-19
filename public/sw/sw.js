@@ -8,7 +8,7 @@
 
 'use strict';
 
-const CACHE_VERSION  = 'v5';
+const CACHE_VERSION  = 'v6';
 const STATIC_CACHE   = `static-${CACHE_VERSION}`;
 const API_CACHE      = `api-${CACHE_VERSION}`;
 
@@ -31,6 +31,9 @@ const STATIC_ASSETS = [
     '/public/js/controllers/HomeController.js',
     '/public/js/controllers/ActiveSwarmsController.js',
     '/public/js/controllers/SwarmDetailController.js',
+    '/public/js/controllers/HowItWorksController.js',
+    '/public/js/controllers/PastWinnersController.js',
+    '/public/js/controllers/FaqController.js',
 ];
 
 // -------------------------

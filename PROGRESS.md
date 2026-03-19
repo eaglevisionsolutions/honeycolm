@@ -18,10 +18,10 @@
 
 ---
 
-## Overall Progress: 19 of 29 tasks complete (66%)
+## Overall Progress: 20 of 29 tasks complete (69%)
 
 ```
-[====================----------]  66%
+[=====================---------]  69%
 ```
 
 ---
@@ -48,7 +48,7 @@ All backend API tasks and security reviews are complete. The entire backend is b
 
 ---
 
-## Member-Facing Frontend (Tasks 14–20) — 5 of 7 complete
+## Member-Facing Frontend (Tasks 14–20) — 6 of 7 complete
 
 | # | Task | Status |
 |---|------|--------|
@@ -56,11 +56,11 @@ All backend API tasks and security reviews are complete. The entire backend is b
 | 15 | Homepage (hero, How It Works, Swarm preview grid, winners strip) | Done |
 | 16 | Active Swarms Browse Page (filters, SwarmCard grid, offline cache) | Done |
 | 17 | Swarm Detail Page (gallery, odds, countdown, Comb purchase) | Done |
-| 18 | **How It Works, Past Winners, and FAQ Pages** | **Pending** |
+| 18 | How It Works, Past Winners, and FAQ Pages | Done |
 | 19 | **Member Account Dashboard** | **Pending** |
 | 20 | **Nectar Wallet and Top-Up Page** | **Pending** |
 
-**What's left:** Three content/account pages — the static info pages (How It Works, Past Winners, FAQ) and the two authenticated member pages (dashboard and wallet).
+**What's left:** Two authenticated member pages — the account dashboard and the Nectar wallet/top-up page.
 
 ---
 
@@ -95,16 +95,16 @@ These run after all frontend pages are built.
 
 | Commit | Description |
 |--------|-------------|
+| _(next)_ | Task 18: How It Works, Past Winners, and FAQ pages |
 | `5a02c02` | Task 12: Security review swarm & payment — fix double-refund vulnerability |
 | `b0b49cc` | Fix asset 404s — remove double /public/ prefix from HTML paths and fix nginx config |
 | `2917f4e` | Task 11: Email notification system — queue, templates, and lifecycle hooks |
-| `fbd33fa` | Task 7: Security review wallet & payment — fix atomic webhook crediting |
 
 ---
 
 ## What's Next
 
-1. **Task 18** — How It Works, Past Winners, and FAQ pages
-2. **Tasks 19–20** — Member dashboard and Nectar wallet page
+1. **Task 19** — Member Account Dashboard
+2. **Task 20** — Nectar Wallet and Top-Up Page
 3. **Tasks 24–27** — Remaining admin panel pages
 4. **Tasks 28–29** — SEO metadata and final documentation

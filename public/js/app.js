@@ -53,6 +53,15 @@ App._initRouteController = function () {
     } else if (/^\/ca\/swarms\/\d+$/.test(path)) {
         const ctrl = new App.Controllers.SwarmDetailController();
         ctrl.init();
+    } else if (path === '/ca/how-it-works') {
+        const ctrl = new App.Controllers.HowItWorksController();
+        ctrl.init();
+    } else if (path === '/ca/past-winners') {
+        const ctrl = new App.Controllers.PastWinnersController();
+        ctrl.init();
+    } else if (path === '/ca/faq') {
+        const ctrl = new App.Controllers.FaqController();
+        ctrl.init();
     }
     // Additional route controllers will be added here as they are built.
     // The HomeController currently self-boots via its own $(function) block.

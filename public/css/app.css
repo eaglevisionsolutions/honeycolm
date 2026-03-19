@@ -1331,6 +1331,17 @@ label {
     .winners-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    /* Past Winners full page: 2 columns */
+    .winners-section .winners-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* How It Works steps: keep 3 columns on tablet */
+    .hiw-steps__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
 }
 
 /* =========================================
@@ -1446,6 +1457,47 @@ label {
     .filter-bar {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    /* How It Works steps: single column on mobile */
+    .hiw-steps__grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    /* Past Winners full page: 1 column on mobile */
+    .winners-section .winners-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Page hero mobile */
+    .page-hero {
+        padding: 48px 16px;
+    }
+
+    .page-hero h1 {
+        font-size: 28px;
+    }
+
+    .page-hero__sub,
+    .page-hero p {
+        font-size: 15px;
+    }
+
+    /* Reduce section padding on mobile */
+    .hiw-steps,
+    .hiw-full-section,
+    .hiw-trust,
+    .hiw-trust-section {
+        padding: 48px 16px;
+    }
+
+    .winners-section {
+        padding: 32px 16px;
+    }
+
+    .faq-section {
+        padding: 32px 16px;
     }
 }
 
@@ -1710,6 +1762,283 @@ label {
 .btn-primary--disabled {
     opacity: 0.55;
     cursor: not-allowed;
+}
+
+/* =========================================
+   Page Hero (shared by How It Works, Past Winners, FAQ)
+   ========================================= */
+.page-hero {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.page-hero--dark {
+    background: var(--hive-brown);
+    color: var(--worker-white);
+}
+
+.page-hero--light {
+    background: var(--honeycomb-cream);
+    color: var(--hive-brown);
+}
+
+.page-hero h1 {
+    font-family: var(--font-hero);
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.page-hero__sub,
+.page-hero p {
+    font-family: var(--font-body);
+    font-size: 18px;
+    opacity: 0.85;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.page-hero--dark .page-hero__sub,
+.page-hero--dark p {
+    color: var(--pollen-yellow);
+}
+
+/* =========================================
+   How It Works — Full Page
+   ========================================= */
+.hiw-steps,
+.hiw-full-section {
+    padding: 80px 20px;
+    background: var(--worker-white);
+}
+
+.hiw-steps__inner,
+.hiw-full-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+}
+
+.hiw-steps__heading {
+    font-family: var(--font-hero);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--hive-brown);
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.hiw-steps__grid,
+.hiw-steps .hiw-steps__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.hiw-step__number,
+.hiw-steps .hiw-step .hiw-step__number {
+    display: block;
+    font-family: var(--font-ui);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--honey-gold);
+    line-height: 1;
+    margin-bottom: 12px;
+}
+
+.hiw-step__title,
+.hiw-steps .hiw-step .hiw-step__title {
+    font-family: var(--font-ui);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--hive-brown);
+    margin-bottom: 10px;
+}
+
+.hiw-step__body,
+.hiw-steps .hiw-step .hiw-step__body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--bee-black);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* Trust section */
+.hiw-trust,
+.hiw-trust-section {
+    background: var(--honeycomb-cream);
+    padding: 80px 20px;
+}
+
+.hiw-trust__inner,
+.hiw-trust-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hiw-trust__heading,
+.hiw-trust-inner h2 {
+    font-family: var(--font-hero);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--hive-brown);
+    margin-bottom: 20px;
+}
+
+.hiw-trust__body,
+.hiw-trust-inner p {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--bee-black);
+    line-height: 1.6;
+}
+
+/* CTA section */
+.hiw-cta,
+.hiw-cta-section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.hiw-cta__link-text {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--bee-black);
+}
+
+.hiw-cta__link-text a {
+    color: var(--honey-gold);
+    font-weight: 700;
+}
+
+/* =========================================
+   Past Winners — Full Page
+   ========================================= */
+.winners-section {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.winners-section .winners-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.winners-section .winner-card {
+    background: var(--worker-white);
+    border-radius: var(--radius-card);
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(61, 28, 2, 0.08);
+}
+
+.winner-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+}
+
+.winner-img--placeholder {
+    background: var(--pollen-yellow);
+    width: 100%;
+    aspect-ratio: 4 / 3;
+}
+
+.winner-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.winner-info .winner-name {
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--hive-brown);
+}
+
+.winner-value {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0;
+}
+
+.verify-link {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--honey-gold);
+    text-decoration: none;
+    margin-top: 4px;
+}
+
+.verify-link:hover {
+    text-decoration: underline;
+    color: var(--amber-dark);
+}
+
+#winners-pagination {
+    text-align: center;
+    margin-top: 32px;
+}
+
+/* =========================================
+   FAQ Page
+   ========================================= */
+.faq-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.faq-item {
+    border-bottom: 1px solid var(--pollen-yellow);
+}
+
+.faq-question {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 20px 0;
+    font-family: var(--font-ui);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--hive-brown);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 1.4;
+}
+
+.faq-question::after {
+    content: "+";
+    font-size: 20px;
+    color: var(--honey-gold);
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+.faq-question[aria-expanded="true"]::after {
+    content: "\2212";
+}
+
+.faq-answer {
+    padding: 0 0 20px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--bee-black);
+}
+
+.faq-answer p {
+    margin-bottom: 0;
 }
 
 /* =========================================
