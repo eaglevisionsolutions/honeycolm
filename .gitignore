@@ -50,3 +50,27 @@ Thumbs.db
 
 # ── RALPH runtime files (not source — regenerated each run) ─────────────────
 /.ralph/visual-gate.txt
+
+
+.claude/
+.github/
+.phpunit.result.cache
+.ralph/pdrs/
+.ralph/security/
+APPROVAL_STATUS.md
+CLAUDE.md
+bash.exe.stackdump
+docs/AGENT_CONTEXT.md
+docs/BRAND.md
+docs/BRAND_PROPOSAL.md
+docs/MOCKUP_PROMPTS.md
+docs/PROJECT_SPEC.md
+docs/api.md
+docs/db-schema.md
+docs/security/
+docs/superpowers/
+mockups/
+ralph.sh
+scripts/
+setup.sh
+templates
