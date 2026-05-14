@@ -142,20 +142,36 @@
         });
     </script>
 
-    <!-- Page-specific controllers are appended here by each admin page -->
+    <!-- Page-specific controllers -->
     <script src="/admin/js/controllers/DashboardController.js"></script>
     <script src="/admin/js/controllers/SwarmManagementController.js"></script>
+    <script src="/admin/js/controllers/ProductCatalogController.js"></script>
+    <script src="/admin/js/controllers/MemberManagementController.js"></script>
+    <script src="/admin/js/controllers/OperationsControllers.js"></script>
+    <script src="/admin/js/controllers/SettingsController.js"></script>
     <script>
         'use strict';
         document.addEventListener('DOMContentLoaded', function () {
             var path = window.location.pathname;
+            var ctrl;
             if (path.match(/\/admin\/swarms/)) {
-                var swarmCtrl = new App.Admin.Controllers.SwarmManagementController();
-                swarmCtrl.init();
+                ctrl = new App.Admin.Controllers.SwarmManagementController();
+            } else if (path.match(/\/admin\/products/)) {
+                ctrl = new App.Admin.Controllers.ProductCatalogController();
+            } else if (path.match(/\/admin\/members/)) {
+                ctrl = new App.Admin.Controllers.MemberManagementController();
+            } else if (path.match(/\/admin\/withdrawals/)) {
+                ctrl = new App.Admin.Controllers.WithdrawalController();
+            } else if (path.match(/\/admin\/draws/)) {
+                ctrl = new App.Admin.Controllers.DrawController();
+            } else if (path.match(/\/admin\/finance/)) {
+                ctrl = new App.Admin.Controllers.FinanceController();
+            } else if (path.match(/\/admin\/settings/)) {
+                ctrl = new App.Admin.Controllers.SettingsController();
             } else {
-                var dashboard = new App.Admin.Controllers.DashboardController();
-                dashboard.init();
+                ctrl = new App.Admin.Controllers.DashboardController();
             }
+            ctrl.init();
         });
     </script>
 

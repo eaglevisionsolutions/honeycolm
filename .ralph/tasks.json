@@ -216,7 +216,7 @@
       "agent": "pwa-frontend",
       "depends_on": [21],
       "complexity": "MED",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "id": 25,
@@ -225,7 +225,7 @@
       "agent": "pwa-frontend",
       "depends_on": [21],
       "complexity": "MED",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "id": 26,
@@ -234,7 +234,7 @@
       "agent": "pwa-frontend",
       "depends_on": [21],
       "complexity": "MED",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "id": 27,
@@ -243,7 +243,7 @@
       "agent": "pwa-frontend",
       "depends_on": [21],
       "complexity": "MED",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "id": 28,
