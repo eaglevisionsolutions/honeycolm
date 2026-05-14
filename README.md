@@ -18,17 +18,13 @@ public/               index.html, app.css, app.js, Service Worker, offline.html
                       + ES6 base classes: ApiService, AuthService, SyncService,
                         BaseController, Validator, ServiceWorkerUtil
 migrations/           Migration base class + users table migration
+scripts/              migration-runner.php, migrate-staging.sh, validation scripts
 tests/                PHPUnit bootstrap + AuthService test
-docker/               PHP-FPM + Nginx + MySQL + Supervisord config
-Dockerfile            Production multi-stage build
-Dockerfile.dev        Dev image with Xdebug
-docker-compose.yml    Local dev stack
-.github/workflows/    CI: PHPUnit + JS lint
 ralph.sh              RALPH orchestrator
 templates/            PROJECT_SPEC.md, WHAT_EXISTS.md, FEATURE_REQUEST.md templates
 CLAUDE.md             Conversational project manager (read by VS Code / Antigravity)
 APPROVAL_STATUS.md    Phase tracker — updated automatically through the chat flow
-COOLIFY_SETUP.md      Coolify deployment guide
+COOLIFY_SETUP.md      Server deployment and SSH migration guide
 ```
 
 ---
@@ -72,11 +68,13 @@ Claude will take you through the rest:
 ## Environment setup (do this before starting chat)
 
 ```bash
-cp .env.example .env.local
-# Edit .env.local — set APP_NAME, DB_DATABASE, DB_USERNAME, DB_PASSWORD, APP_URL
-# JWT_SECRET: openssl rand -hex 32
-bash setup.sh   # choose Docker
-docker compose ps   # all containers must show: running (healthy)
+bash setup.sh
+# Copies .env.staging.local.example → .env.staging.local
+# Edit .env.staging.local with your server SSH credentials
+
+# Push code to development → server auto-deploys
+# Then run migrations:
+bash scripts/migrate-staging.sh
 ```
 
 ---
