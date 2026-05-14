@@ -35,6 +35,7 @@ const STATIC_ASSETS = [
     '/js/controllers/PastWinnersController.js',
     '/js/controllers/FaqController.js',
     '/js/controllers/AccountDashboardController.js',
+    '/js/controllers/NectarWalletController.js',
     '/js/controllers/LoginController.js',
     '/js/controllers/RegisterController.js',
 ];

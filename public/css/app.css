@@ -2546,3 +2546,169 @@ label {
         padding: 32px 16px 60px;
     }
 }
+
+/* =========================================
+   Nectar Wallet Page
+   ========================================= */
+.wallet-layout {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 40px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+}
+
+.wallet-page-title {
+    font-family: var(--font-hero);
+    font-size: 32px;
+    color: var(--hive-brown);
+    margin: 0 0 32px;
+}
+
+/* Balance cards */
+.balance-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.balance-card {
+    background: var(--worker-white);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(196, 122, 30, 0.3);
+}
+
+.balance-card--deposit { border-color: var(--honey-gold); }
+.balance-card--bonus   { border-color: var(--pollen-yellow); }
+
+.balance-label  { font-family: var(--font-body); font-size: 13px; color: var(--bee-black); margin: 0 0 8px; }
+.balance-amount { font-family: var(--font-hero); font-size: 32px; color: var(--hive-brown); margin: 0 0 6px; }
+.balance-sub    { font-family: var(--font-body); font-size: 12px; color: #666; margin: 0; }
+
+.balance-total {
+    font-family: var(--font-hero);
+    font-size: 18px;
+    color: var(--hive-brown);
+    margin-bottom: 32px;
+}
+
+/* Top-up tiers */
+.topup-section  { margin-bottom: 40px; }
+.topup-title    { font-family: var(--font-hero); font-size: 22px; color: var(--hive-brown); margin: 0 0 20px; }
+
+.tier-cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.tier-card {
+    background: var(--worker-white);
+    border: 2px solid var(--pollen-yellow);
+    border-radius: 12px;
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.tier-card:hover { border-color: var(--honey-gold); }
+.tier-card.active { border-color: var(--honey-gold); background: #FFF3DC; }
+
+.tier-price   { font-family: var(--font-hero); font-size: 18px; color: var(--hive-brown); margin: 0 0 4px; }
+.tier-deposit { font-family: var(--font-body); font-size: 14px; color: var(--bee-black); margin: 0 0 4px; }
+.tier-bonus {
+    background: var(--honey-gold);
+    color: var(--hive-brown);
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-family: var(--font-hero);
+    font-size: 12px;
+    display: inline-block;
+    margin: 4px 0;
+}
+.tier-total { font-family: var(--font-hero); font-size: 14px; color: var(--honey-gold); margin: 4px 0 0; }
+
+/* Withdrawal section */
+.withdrawal-section   { margin-bottom: 40px; }
+.withdrawal-title     { font-family: var(--font-hero); font-size: 22px; color: var(--hive-brown); margin: 0 0 20px; }
+.withdrawal-unavailable { font-family: var(--font-body); color: #666; font-size: 15px; }
+
+/* Transaction history */
+.wallet-history { padding-top: 8px; }
+.wallet-history-title {
+    font-family: var(--font-hero);
+    font-size: 22px;
+    color: var(--hive-brown);
+    margin: 0 0 20px;
+}
+
+.tx-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 100px 70px 110px;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--pollen-yellow);
+    font-family: var(--font-body);
+    font-size: 14px;
+    align-items: center;
+}
+
+.tx-row--header {
+    font-family: var(--font-hero);
+    font-size: 13px;
+    color: #888;
+    padding-bottom: 8px;
+}
+
+.tx-amount--positive { color: #2e7d32; font-weight: 700; }
+.tx-amount--negative { color: var(--hive-brown); font-weight: 700; }
+
+.wallet-empty-state { color: #888; font-size: 15px; padding: 24px 0; }
+
+.wallet-load-more {
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 1023px) {
+    .wallet-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .tier-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .balance-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .tier-cards {
+        display: flex;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        gap: 10px;
+        padding-bottom: 8px;
+    }
+
+    .tier-card {
+        min-width: 140px;
+        flex-shrink: 0;
+    }
+
+    .tx-row {
+        grid-template-columns: 90px 1fr 80px;
+    }
+
+    .tx-bucket,
+    .tx-balance-after { display: none; }
+}

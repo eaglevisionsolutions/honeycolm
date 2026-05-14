@@ -180,7 +180,7 @@
       "agent": "pwa-frontend",
       "depends_on": [14],
       "complexity": "MED",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "id": 21,
