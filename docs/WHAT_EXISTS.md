@@ -272,6 +272,32 @@ This file is read by every agent before writing new code to avoid duplication an
 |--------------------------------|----------------------|------|
 | `DashboardController`          | Admin dashboard      | 22   |
 | `SwarmManagementController`    | Swarm list, create, detail | 23 |
+| `ProductManagementController`  | Product catalog      | 24   |
+| `MemberManagementController`   | Member list, detail  | 25   |
+| `WithdrawalController`         | Withdrawal management | 26   |
+| `DrawController`               | Draw log, shipping   | 26   |
+| `FinanceController`            | Finance overview     | 26   |
+| `SettingsController`           | Platform settings    | 27   |
+
+### Member Pages (SPA Controllers)
+
+| Class                    | Route / Page         | Task |
+|--------------------------|----------------------|------|
+| `LoginController`        | /ca/login, /ca/register | 14   |
+| `HomeController`         | /ca/                 | 15   |
+| `ActiveSwarmsController` | /ca/swarms           | 16   |
+| `SwarmDetailController`  | /ca/swarms/{id}      | 17   |
+| `HowItWorksController`   | /ca/how-it-works     | 18   |
+| `PastWinnersController`  | /ca/past-winners     | 18   |
+| `FaqController`          | /ca/faq              | 18   |
+| `AccountDashboardController` | /ca/account      | 19   |
+| `NectarWalletController` | /ca/wallet           | 20   |
+
+### Utility Classes (JS)
+
+| Class              | Purpose                                              | Task |
+|--------------------|------------------------------------------------------|------|
+| `App.Utils.SEO`    | Dynamically set meta tags, page title, canonical URL | 28   |
 
 ---
 
