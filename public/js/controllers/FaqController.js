@@ -32,6 +32,13 @@ App.Controllers.FaqController = class FaqController extends App.Controllers.Base
      * @returns {void}
      */
     init() {
+        App.Utils.SEO.setPageMeta({
+            title:       'FAQ — Honeycolm',
+            description: 'Answers to your Honeycolm questions — how Swarms work, what Nectar is, how draws are verified.',
+            canonical:   'https://honeycolm.ca/ca/faq',
+            schema:      App.Utils.SEO.faqSchema(this._getFaqData()),
+        });
+
         this._render();
         this._bindEvents();
     }

@@ -36,6 +36,13 @@ App.Controllers.HomeController = class HomeController extends App.Controllers.Ba
      * @returns {void}
      */
     init() {
+        App.Utils.SEO.setPageMeta({
+            title:       'Honeycolm — Hive in. Win big. | Canada\'s Crowd-Purchase Marketplace',
+            description: 'Join a Swarm, buy Combs, and let the Hive do the rest. Canada\'s crowd-purchase marketplace — verified by Random.org. One lucky bee wins the honey.',
+            canonical:   'https://honeycolm.ca/ca/',
+            schema:      App.Utils.SEO.organizationSchema(),
+        });
+
         this.renderHero();
         this.renderHowItWorks();
         this.loadSwarms();

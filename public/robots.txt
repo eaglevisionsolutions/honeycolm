@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /ca/
+Allow: /us/
+Disallow: /admin/
+Disallow: /api/
+Sitemap: https://honeycolm.ca/sitemap.xml

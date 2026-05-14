@@ -37,6 +37,12 @@ App.Controllers.ActiveSwarmsController = class ActiveSwarmsController extends Ap
      * @returns {void}
      */
     init() {
+        App.Utils.SEO.setPageMeta({
+            title:       'Active Swarms — Honeycolm',
+            description: 'Browse all live Swarms on Honeycolm. Filter by category, price, and time remaining. Every Comb is a chance to win.',
+            canonical:   'https://honeycolm.ca/ca/swarms',
+        });
+
         this._renderPageShell();
         this.renderFilterBar();
         this._bindEvents();

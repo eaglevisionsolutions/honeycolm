@@ -25,6 +25,7 @@ const STATIC_ASSETS = [
     '/js/controllers/BaseController.js',
     '/js/utils/Validator.js',
     '/js/utils/ServiceWorkerUtil.js',
+    '/js/utils/SEO.js',
     '/js/components/SwarmCard.js',
     '/js/components/CountdownTimer.js',
     '/js/components/RegionSwitcher.js',

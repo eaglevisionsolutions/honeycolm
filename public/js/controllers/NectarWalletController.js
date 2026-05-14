@@ -42,6 +42,11 @@ App.Controllers.NectarWalletController = class NectarWalletController extends Ap
             return;
         }
 
+        App.Utils.SEO.setPageMeta({
+            title:  'My Wallet — Honeycolm',
+            robots: 'noindex, nofollow',
+        });
+
         // Detect Stripe return params and show feedback
         this._handleStripeReturn();
 

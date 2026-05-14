@@ -38,6 +38,12 @@ App.Controllers.PastWinnersController = class PastWinnersController extends App.
      * @returns {void}
      */
     init() {
+        App.Utils.SEO.setPageMeta({
+            title:       'Past Winners — Honeycolm',
+            description: 'Real winners, real products. Every Honeycolm draw is verified by Random.org.',
+            canonical:   'https://honeycolm.ca/ca/past-winners',
+        });
+
         this._renderShell();
         this.loadWinners(1);
     }

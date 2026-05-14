@@ -9,6 +9,12 @@
 App.Controllers.HowItWorksController = class HowItWorksController extends App.Controllers.BaseController {
 
     init() {
+        App.Utils.SEO.setPageMeta({
+            title:       'How It Works — Honeycolm',
+            description: 'Learn how Honeycolm\'s crowd-purchase Swarms work. No lottery. A crowd-purchase marketplace verified by Random.org.',
+            canonical:   'https://honeycolm.ca/ca/how-it-works',
+        });
+
         const html = `
             <section class="page-hero page-hero--light honeycomb-pattern">
                 <h1>How it works</h1>

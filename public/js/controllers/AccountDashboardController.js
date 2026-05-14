@@ -36,6 +36,11 @@ App.Controllers.AccountDashboardController = class AccountDashboardController ex
             return;
         }
 
+        App.Utils.SEO.setPageMeta({
+            title:  'My Account — Honeycolm',
+            robots: 'noindex, nofollow',
+        });
+
         $('#app-root').html(
             '<div class="page-loading"><span class="spinner"></span> Loading your account&hellip;</div>'
         );

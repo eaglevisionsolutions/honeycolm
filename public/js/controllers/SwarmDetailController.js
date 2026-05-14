@@ -95,6 +95,12 @@ App.Controllers.SwarmDetailController = class SwarmDetailController extends App.
                 this.renderPage(this._swarm);
                 this.showInfo('Showing cached data. Some information may be outdated.');
             } else {
+                // Fallback SEO metadata when swarm data is unavailable
+                App.Utils.SEO.setPageMeta({
+                    title:       'Swarm — Honeycolm',
+                    description: 'Browse crowd-purchase Swarms on Honeycolm. One lucky bee wins the honey. Verified by Random.org.',
+                    canonical:   'https://honeycolm.ca/ca/swarms/' + id,
+                });
                 $('#app-root').html(
                     '<div class="container mt-3"><p class="empty-state">Unable to load this Swarm. Please try again later.</p></div>'
                 );
@@ -130,6 +136,23 @@ App.Controllers.SwarmDetailController = class SwarmDetailController extends App.
         const product = swarm.product || {};
         const images  = (product.images && product.images.length > 0) ? product.images : [];
         const isTerminal = ['full', 'draw_complete', 'shipped', 'expired', 'cancelled'].includes(swarm.status);
+
+        // ── SEO metadata — set after API data is available ────────────────────
+        const productName  = product.name || swarm.title || 'Swarm';
+        const retailValue  = product.retail_value ? 'Nt ' + product.retail_value : '';
+        const combPrice    = swarm.comb_price ? 'Nt ' + parseFloat(swarm.comb_price) + ' per Comb' : '';
+        const descParts    = [productName + ' Swarm on Honeycolm.'];
+        if (retailValue)  { descParts.push('Retail value: ' + retailValue + '.'); }
+        if (combPrice)    { descParts.push(combPrice + '.'); }
+        descParts.push('Verified by Random.org. No manual draws. Ever.');
+        const dynamicDesc  = descParts.join(' ').slice(0, 160);
+        const swarmId      = this._swarmId || '';
+
+        App.Utils.SEO.setPageMeta({
+            title:     productName + ' — Swarm on Honeycolm',
+            description: dynamicDesc,
+            canonical: 'https://honeycolm.ca/ca/swarms/' + swarmId,
+        });
 
         let html = '<div class="swarm-detail-page container">';
         html += '<div class="swarm-detail">';
