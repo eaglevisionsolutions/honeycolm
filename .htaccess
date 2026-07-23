@@ -1,0 +1,52 @@
+# =============================================================================
+# Honeycolm — root .htaccess
+# Deployed to: public_html/.htaccess on cPanel or CyberPanel hosts.
+# Inert on Nginx (VPS) — Nginx does not read .htaccess.
+#
+# Two responsibilities:
+#   1. Deny direct access to every private path (app/, api/, migrations/,
+#      storage/, vendor/, .env, etc.) — belt + braces via BOTH deny directives
+#      AND rewrite [F,L] rules.
+#   2. Rewrite everything else into /public/ so end users never see /public/
+#      in the URL. /api/v1/* is routed straight to api/v1/index.php.
+# =============================================================================
+
+Options -Indexes -MultiViews
+
+# --- File-level denies (belt) -------------------------------------------------
+# Dotfiles (.env, .git*, .htaccess itself, etc.)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Sensitive root-level files.
+<FilesMatch "(?i)^(composer\.(json|lock)|phpunit\.xml|package(-lock)?\.json|.*\.(md|sh|bak|sql|log|yml|yaml|env|example))$">
+    Require all denied
+</FilesMatch>
+
+# --- Rewrites (braces) -------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. API front controller: /api/v1/* -> api/v1/index.php (preserving QS).
+    #    Runs FIRST so it wins before the generic api/ deny below.
+    RewriteCond %{REQUEST_URI} ^/api/v1/
+    RewriteRule ^api/v1/.*$ api/v1/index.php [QSA,L]
+
+    # 2. Deny direct access to private top-level directories.
+    RewriteRule ^(app|migrations|scripts|storage|tests|vendor|node_modules|docs|mockups|screenshots|templates|security|superpowers)(/|$) - [F,L]
+
+    # 3. Deny any api/ path that is not api/v1/* (already handled in rule 1).
+    RewriteRule ^api(/|$) - [F,L]
+
+    # 4. If the request already targets /public/, or is the bare root, don't rewrite again.
+    RewriteCond %{REQUEST_URI} ^/public/ [OR]
+    RewriteCond %{REQUEST_URI} ^/$
+    RewriteRule ^ - [L]
+
+    # 5. Everything else: serve from /public/.
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# --- Root request serves the SPA shell ---------------------------------------
+DirectoryIndex public/index.html

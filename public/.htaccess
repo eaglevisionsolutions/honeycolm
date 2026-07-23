@@ -1,0 +1,65 @@
+# =============================================================================
+# Honeycolm — public/.htaccess
+# Deployed to: public_html/public/.htaccess (via git pull).
+# Handles SPA fallback, asset caching, and security headers.
+# API routing is owned by the root .htaccess (avoids ../ traversal on LSAPI).
+# =============================================================================
+
+Options -Indexes -MultiViews
+
+# --- SPA fallback -------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Never rewrite API requests — the root .htaccess already routed them.
+    RewriteCond %{REQUEST_URI} ^/api/ [OR]
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Anything else: serve the SPA shell.
+    RewriteRule ^ /index.html [L]
+</IfModule>
+
+# --- Cache headers ------------------------------------------------------------
+<IfModule mod_headers.c>
+    # Service worker: never cache.
+    <FilesMatch "(?i)^sw\.js$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+
+    # index.html + offline.html: revalidate every request.
+    <FilesMatch "(?i)^(index|offline)\.html$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+
+    # Security headers (CSP is set by the app).
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    # Long-cache immutable assets.
+    ExpiresByType text/css                  "access plus 1 year"
+    ExpiresByType application/javascript    "access plus 1 year"
+    ExpiresByType image/png                 "access plus 1 year"
+    ExpiresByType image/jpeg                "access plus 1 year"
+    ExpiresByType image/svg+xml             "access plus 1 year"
+    ExpiresByType image/webp                "access plus 1 year"
+    ExpiresByType font/woff2                "access plus 1 year"
+    # Short cache for HTML and JSON (manifests, API responses served as files).
+    ExpiresByType text/html                 "access plus 0 seconds"
+    ExpiresByType application/json          "access plus 0 seconds"
+</IfModule>
+
+# --- HTTPS enforcement (uncomment per-deployment) -----------------------------
+# <IfModule mod_rewrite.c>
+#     RewriteCond %{HTTPS} !=on
+#     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# </IfModule>
