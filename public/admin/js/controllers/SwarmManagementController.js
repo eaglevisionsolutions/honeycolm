@@ -74,7 +74,7 @@ App.Admin.Controllers.SwarmManagementController = class SwarmManagementControlle
         const path   = window.location.pathname;
         const params = new URLSearchParams(window.location.search);
 
-        if (path.match(/\/admin\/swarms\/create\/?$/)) {
+        if (path.match(/\/admin\/(swarms\/create|create-swarm)(\.html)?\/?$/)) {
             const step = parseInt(params.get('step'), 10) || 1;
             if (step === 3) {
                 this.renderCreateStep3();
