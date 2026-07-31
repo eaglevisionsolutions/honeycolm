@@ -68,6 +68,30 @@ $routes = [
     // Notification admin routes (AdminAuthMiddleware)
     'GET /admin/notifications' => [\App\Controllers\NotificationController::class, 'index'],
 
+    // Dashboard admin route (AdminAuthMiddleware)
+    'GET /admin/dashboard' => [\App\Controllers\DashboardController::class, 'index'],
+
+    // Member management admin routes (AdminAuthMiddleware)
+    'GET /admin/members'                     => [\App\Controllers\MemberController::class, 'index'],
+    'GET /admin/members/{id}'                => [\App\Controllers\MemberController::class, 'show'],
+    'PATCH /admin/members/{id}'              => [\App\Controllers\MemberController::class, 'update'],
+    'POST /admin/members/{id}/wallet/adjust' => [\App\Controllers\MemberController::class, 'adjustWallet'],
+
+    // Withdrawal admin routes (AdminAuthMiddleware)
+    'GET /admin/withdrawals'        => [\App\Controllers\WithdrawalController::class, 'index'],
+    'PATCH /admin/withdrawals/{id}' => [\App\Controllers\WithdrawalController::class, 'update'],
+
+    // Finance admin route (AdminAuthMiddleware)
+    'GET /admin/finance' => [\App\Controllers\FinanceController::class, 'index'],
+
+    // Settings & staff admin routes (AdminAuthMiddleware)
+    'GET /admin/settings'                 => [\App\Controllers\SettingsController::class, 'show'],
+    'PATCH /admin/settings'               => [\App\Controllers\SettingsController::class, 'update'],
+    'GET /admin/settings/test-random-org' => [\App\Controllers\SettingsController::class, 'testRandomOrg'],
+    'GET /admin/staff'                    => [\App\Controllers\SettingsController::class, 'listStaff'],
+    'POST /admin/staff'                   => [\App\Controllers\SettingsController::class, 'createStaff'],
+    'PATCH /admin/staff/{id}'             => [\App\Controllers\SettingsController::class, 'updateStaff'],
+
     // Account routes (member auth required)
     'GET /account/swarms'      => [\App\Controllers\AccountController::class, 'mySwarms'],
     'GET /account/wins'        => [\App\Controllers\AccountController::class, 'myWins'],

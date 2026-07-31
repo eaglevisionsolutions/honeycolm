@@ -186,4 +186,56 @@ class WalletModel extends BaseModel
 
         return $stmt->rowCount() > 0;
     }
+
+    /**
+     * Applies a signed adjustment to a single bucket (deposit or bonus) using
+     * SELECT FOR UPDATE. Used for manual admin Nectar adjustments, where the
+     * amount can be positive (credit) or negative (debit).
+     *
+     * @return float The bucket's new balance after the adjustment.
+     * @throws ValidationException when the bucket is invalid or the result would be negative
+     */
+    public function adjustBucket(int $walletId, string $bucket, float $amount): float
+    {
+        if (!in_array($bucket, ['deposit', 'bonus'], true)) {
+            throw new ValidationException(['bucket' => 'Bucket must be "deposit" or "bonus".']);
+        }
+        $column = "{$bucket}_balance";
+
+        $this->db->beginTransaction();
+
+        try {
+            $stmt = $this->db->prepare(
+                "SELECT `id`, `{$column}` FROM `wallets` WHERE `id` = ? FOR UPDATE"
+            );
+            $stmt->execute([$walletId]);
+            $wallet = $stmt->fetch();
+
+            if ($wallet === false) {
+                $this->db->rollBack();
+                throw new ValidationException(['wallet' => 'Wallet not found.']);
+            }
+
+            $newBalance = (float) $wallet[$column] + $amount;
+
+            if ($newBalance < 0) {
+                $this->db->rollBack();
+                throw new ValidationException(['amount' => 'Adjustment would result in a negative balance.']);
+            }
+
+            $update = $this->db->prepare(
+                "UPDATE `wallets` SET `{$column}` = ?, `updated_at` = NOW() WHERE `id` = ?"
+            );
+            $update->execute([$newBalance, $walletId]);
+
+            $this->db->commit();
+
+            return $newBalance;
+        } catch (\Throwable $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            throw $e;
+        }
+    }
 }

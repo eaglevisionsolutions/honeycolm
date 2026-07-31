@@ -23,6 +23,41 @@ class WithdrawalRequestModel extends BaseModel
     }
 
     /**
+     * Returns withdrawal requests for a given status, joined with the requesting member.
+     * Ordered newest-first. Used by the admin withdrawals page.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function findByStatusWithMember(string $status): array
+    {
+        return $this->query(
+            "SELECT wr.*, u.`name` AS member_name, u.`email` AS member_email, u.`home_region` AS region
+               FROM `withdrawal_requests` wr
+               JOIN `users` u ON u.`id` = wr.`user_id`
+              WHERE wr.`status` = ?
+              ORDER BY wr.`created_at` DESC",
+            [$status]
+        );
+    }
+
+    /**
+     * Returns the most recently paid withdrawal requests, joined with the requesting member.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function findRecentPaidWithMember(int $limit = 10): array
+    {
+        return $this->query(
+            "SELECT wr.*, u.`name` AS member_name, u.`email` AS member_email
+               FROM `withdrawal_requests` wr
+               JOIN `users` u ON u.`id` = wr.`user_id`
+              WHERE wr.`status` = 'paid'
+              ORDER BY wr.`paid_at` DESC
+              LIMIT " . max(1, $limit)
+        );
+    }
+
+    /**
      * Update the status of a withdrawal request.
      * Optionally record who reviewed it and any notes.
      */
