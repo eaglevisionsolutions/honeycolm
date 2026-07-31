@@ -2422,8 +2422,9 @@ body.admin-login-body::before {
 }
 
 .admin-modal h2 {
-    font-family: var(--font-hero);
-    font-size: 22px;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 20px;
     color: var(--hive-brown);
     margin: 0 0 24px;
 }
@@ -2633,7 +2634,7 @@ body.admin-login-body::before {
     border-bottom: 1px solid var(--pollen-yellow);
 }
 .region-flag { font-size: 20px; }
-.region-name { font-family: var(--font-hero); font-size: 15px; font-weight: 500; flex: 1; }
+.region-name { font-family: var(--font-ui); font-size: 15px; font-weight: 500; color: var(--hive-brown); flex: 1; }
 
 .api-key-field { display: flex; gap: 8px; align-items: center; }
 .api-key-field input { flex: 1; }
@@ -2644,8 +2645,9 @@ body.admin-login-body::before {
     gap: 6px;
     padding: 4px 12px;
     border-radius: 999px;
-    font-family: var(--font-hero);
-    font-size: 13px;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 12px;
 }
 .connection-badge--ok    { background: #D4EDDA; color: #155724; }
 .connection-badge--error { background: #F8D7DA; color: #721C24; }
@@ -2655,7 +2657,8 @@ body.admin-login-body::before {
     color: var(--hive-brown);
     border-radius: 999px;
     padding: 2px 8px;
-    font-family: var(--font-hero);
+    font-family: var(--font-ui);
+    font-weight: 700;
     font-size: 11px;
     margin-left: 6px;
 }
@@ -3175,5 +3178,411 @@ select.form-control {
 
     .admin-stats-row {
         grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================
+   Task 29 — Catalog page + Member detail gap fill
+   (Product Catalog was rewritten with BEM-style
+   classes that Task 24's CSS never covered; Member
+   detail actions/adjust-form were never styled at all.)
+   ========================================= */
+
+/* --- Catalog page shell --- */
+.catalog-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.catalog-title {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--hive-brown);
+}
+
+.catalog-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.catalog-search {
+    max-width: 320px;
+}
+
+.catalog-filter-tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.catalog-filter-tab {
+    background: var(--worker-white);
+    border: 1px solid var(--pollen-yellow);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--hive-brown);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+}
+
+.catalog-filter-tab:hover {
+    background: var(--pollen-yellow);
+}
+
+.catalog-filter-tab--active {
+    background: var(--honey-gold);
+    border-color: var(--honey-gold);
+    color: var(--hive-brown);
+    font-weight: 700;
+}
+
+.catalog-delete-notice {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: #888888;
+    font-style: italic;
+    margin-bottom: 16px;
+}
+
+.catalog-loading,
+.catalog-empty {
+    grid-column: 1 / -1;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #999999;
+    text-align: center;
+    padding: 16px 0;
+}
+
+.catalog-error {
+    grid-column: 1 / -1;
+    background: #FDECEA;
+    border-left: 3px solid #C0392B;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #B71C1C;
+}
+
+/* --- Catalog grid cards (BEM element names; shares .product-card
+       container styling with the Swarm-create product picker) --- */
+.product-card__image-wrap {
+    margin-bottom: 8px;
+}
+
+.product-card__image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.product-card__image-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--pollen-yellow);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaaaaa;
+    font-family: var(--font-body);
+    font-size: 12px;
+}
+
+.product-card__meta-row {
+    min-height: 20px;
+}
+
+.product-card__category-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--hive-brown);
+    background: var(--pollen-yellow);
+    border-radius: 4px;
+    padding: 2px 8px;
+}
+
+.product-card__name {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--hive-brown);
+    margin: 8px 0 2px;
+}
+
+.product-card__brand {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 4px;
+}
+
+.product-card__retail-value {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--hive-brown);
+}
+
+.product-card__times-used {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: #999999;
+    margin-top: 2px;
+}
+
+.product-card__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+/* --- Add/Edit product modal (BEM sub-elements; .admin-modal
+       and .admin-modal-overlay containers already existed) --- */
+.admin-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.admin-modal__title {
+    margin: 0;
+}
+
+.admin-modal__close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    color: #999999;
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+.admin-modal__close-btn:hover {
+    color: var(--hive-brown);
+}
+
+.admin-modal__body {
+    margin-bottom: 20px;
+}
+
+.admin-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--pollen-yellow);
+}
+
+.admin-modal__form-error {
+    color: #C0392B;
+    font-family: var(--font-body);
+    font-size: 13px;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: #FDECEA;
+    border-radius: 6px;
+    border-left: 3px solid #C0392B;
+}
+
+/* --- Product image management (inside the edit modal) --- */
+.product-images-section {
+    margin-top: 20px;
+}
+
+.product-images-section__title {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--hive-brown);
+    margin-bottom: 12px;
+}
+
+.image-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 0;
+}
+
+.image-list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.image-list-item__thumb {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--pollen-yellow);
+}
+
+.image-list-item__actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.image-list-empty {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: #999999;
+}
+
+.image-delete-confirm__label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--bee-black);
+}
+
+.form-control-file {
+    font-family: var(--font-body);
+    font-size: 13px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* --- Generic reusable card (Member detail / Swarm detail) --- */
+.admin-card {
+    background: var(--worker-white);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid var(--pollen-yellow);
+    box-shadow: 0 2px 8px rgba(61, 28, 2, 0.06);
+    margin-bottom: 20px;
+}
+
+.admin-card:last-child {
+    margin-bottom: 0;
+}
+
+.member-list-subtitle {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #666666;
+    margin-top: 4px;
+}
+
+.member-info-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+}
+
+.member-info-list dt {
+    color: #666666;
+}
+
+.member-info-list dd {
+    color: var(--bee-black);
+    font-weight: 500;
+    text-align: right;
+}
+
+.member-action-group {
+    margin-bottom: 16px;
+}
+
+.btn-admin-danger {
+    background: #FDECEA;
+    color: #B71C1C;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    white-space: nowrap;
+}
+
+.btn-admin-danger:hover {
+    background: #F8D7DA;
+}
+
+.member-confirm-wrap {
+    margin-top: 12px;
+    padding: 12px;
+    background: var(--honeycomb-cream);
+    border-radius: 8px;
+    border: 1px solid var(--pollen-yellow);
+}
+
+.member-confirm-text {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--bee-black);
+    margin-bottom: 12px;
+}
+
+.member-confirm-cancel {
+    margin-left: 8px;
+}
+
+.member-actions-divider {
+    border: none;
+    border-top: 1px solid var(--pollen-yellow);
+    margin: 20px 0;
+}
+
+.member-actions-subtitle {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--hive-brown);
+    margin-bottom: 12px;
+}
+
+.form-required {
+    color: #C0392B;
+}
+
+.form-success {
+    color: #155724;
+    font-family: var(--font-body);
+    font-size: 13px;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: #D4EDDA;
+    border-radius: 6px;
+    border-left: 3px solid #2E7D32;
+}
+
+@media (max-width: 1023px) {
+    .catalog-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .catalog-search {
+        max-width: none;
     }
 }
