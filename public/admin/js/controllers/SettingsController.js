@@ -369,7 +369,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
      */
     _parseCurrentStaffId() {
         try {
-            const token = localStorage.getItem('admin_token');
+            const token = App.Admin.AuthService.getToken();
             if (!token) return;
 
             const parts = token.split('.');
