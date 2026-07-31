@@ -2663,3 +2663,517 @@ body.admin-login-body::before {
 @media (max-width: 1023px) {
     .settings-grid { grid-template-columns: 1fr; }
 }
+
+/* =========================================
+   Task 28 — Design-system gap fill
+   (Operations & Settings pages reference these
+   classes directly; Tasks 26/27 above only
+   covered part of the actual markup.)
+   ========================================= */
+
+/* --- Generic page header (Withdrawals / Draws / Finance) --- */
+.admin-page-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.admin-page-title {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--hive-brown);
+}
+
+/* --- Tab bar (mirrors .filter-tab visuals) --- */
+.admin-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.admin-tab {
+    background: var(--worker-white);
+    border: 1px solid var(--pollen-yellow);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--hive-brown);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+}
+
+.admin-tab:hover {
+    background: var(--pollen-yellow);
+}
+
+.admin-tab--active {
+    background: var(--honey-gold);
+    border-color: var(--honey-gold);
+    color: var(--hive-brown);
+    font-weight: 700;
+}
+
+/* --- Table wrapper + loading/empty/error states --- */
+.admin-table-wrap {
+    overflow-x: auto;
+    margin-top: 8px;
+}
+
+.admin-loading {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #BBBBBB;
+    padding: 16px 0;
+    text-align: center;
+}
+
+.admin-empty {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #999999;
+    padding: 16px 0;
+    text-align: center;
+}
+
+.admin-error {
+    background: #FDECEA;
+    border-left: 3px solid #C0392B;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #B71C1C;
+}
+
+.admin-text-muted {
+    color: #999999;
+    font-family: var(--font-body);
+    font-size: 13px;
+}
+
+.actions-cell {
+    white-space: nowrap;
+}
+
+/* --- Row action buttons (Approve / Reject / Mark paid / Ship / Confirm / Cancel) --- */
+.admin-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s ease, opacity 0.15s ease;
+    white-space: nowrap;
+    margin-right: 6px;
+    background: var(--pollen-yellow);
+    color: var(--hive-brown);
+}
+
+.admin-btn:last-child {
+    margin-right: 0;
+}
+
+.admin-btn:hover {
+    opacity: 0.85;
+}
+
+.admin-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.admin-btn--approve,
+.admin-btn--confirm,
+.admin-btn--paid,
+.admin-btn--ship {
+    background: var(--honey-gold);
+    color: var(--hive-brown);
+}
+
+.admin-btn--reject,
+.admin-btn--danger {
+    background: #FDECEA;
+    color: #B71C1C;
+}
+
+.admin-btn--cancel {
+    background: none;
+    border: 1px solid var(--amber-dark);
+    color: var(--hive-brown);
+}
+
+/* --- Inline approve/reject/ship forms --- */
+.inline-action-form__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-textarea,
+.admin-input {
+    border: 1px solid var(--pollen-yellow);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--bee-black);
+    background: var(--worker-white);
+    width: 100%;
+    resize: vertical;
+}
+
+.admin-textarea:focus,
+.admin-input:focus {
+    border-color: var(--honey-gold);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
+}
+
+/* --- Finance page --- */
+.finance-content {
+    margin-top: 8px;
+}
+
+.admin-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.admin-stat-card {
+    background: var(--worker-white);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid var(--pollen-yellow);
+    box-shadow: 0 2px 8px rgba(61, 28, 2, 0.06);
+}
+
+.finance-section-title {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--hive-brown);
+    margin: 32px 0 16px;
+}
+
+@media (max-width: 1023px) {
+    .admin-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* --- Extra status badge variant (withdrawals) --- */
+.badge--pending {
+    background: #FFF3CD;
+    color: #856404;
+}
+
+/* --- Settings page header --- */
+.settings-header {
+    margin-bottom: 8px;
+}
+
+.settings-title {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--hive-brown);
+}
+
+.settings-loading {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #BBBBBB;
+    padding: 16px 0;
+    text-align: center;
+}
+
+/* --- Generic button system (Settings page uses .btn / .btn--* instead of .btn-admin-*) --- */
+.btn {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s ease, opacity 0.15s ease;
+    white-space: nowrap;
+}
+
+.btn--sm {
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn--primary {
+    background: var(--honey-gold);
+    color: var(--hive-brown);
+}
+
+.btn--primary:hover {
+    background: var(--amber-dark);
+}
+
+.btn--secondary {
+    background: var(--pollen-yellow);
+    color: var(--hive-brown);
+}
+
+.btn--secondary:hover {
+    background: var(--amber-dark);
+    color: var(--worker-white);
+}
+
+.btn--ghost {
+    background: none;
+    border: 1px solid var(--amber-dark);
+    color: var(--hive-brown);
+}
+
+.btn--ghost:hover {
+    background: var(--pollen-yellow);
+}
+
+.btn--danger {
+    background: #FDECEA;
+    color: #B71C1C;
+}
+
+.btn--danger:hover {
+    background: #F8D7DA;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* --- Role badges (Staff section) --- */
+.role-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.role-badge--staff {
+    background: var(--pollen-yellow);
+    color: var(--bee-black);
+}
+
+.role-badge--admin {
+    background: var(--honey-gold);
+    color: var(--hive-brown);
+}
+
+.role-badge--super-admin {
+    background: var(--hive-brown);
+    color: var(--honey-gold);
+}
+
+.staff-row--me td {
+    background: rgba(253, 232, 176, 0.35);
+}
+
+.staff-actions {
+    white-space: nowrap;
+}
+
+.settings-actions {
+    margin-top: 16px;
+}
+
+.settings-actions--row {
+    display: flex;
+    gap: 12px;
+}
+
+/* --- Add staff form --- */
+.add-staff-form {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--honeycomb-cream);
+    border-radius: 12px;
+    border: 1px solid var(--pollen-yellow);
+}
+
+.add-staff-form-title {
+    font-family: var(--font-hero);
+    font-size: 16px;
+    color: var(--hive-brown);
+    margin-bottom: 16px;
+}
+
+.add-staff-form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.add-staff-error {
+    color: #C0392B;
+    font-family: var(--font-body);
+    font-size: 13px;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: #FDECEA;
+    border-radius: 6px;
+    border-left: 3px solid #C0392B;
+}
+
+/* --- Generic form control (Settings inputs/selects/textarea) --- */
+.form-control {
+    border: 1px solid var(--pollen-yellow);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--bee-black);
+    background: var(--worker-white);
+    width: 100%;
+    transition: border-color 0.15s ease;
+}
+
+select.form-control {
+    cursor: pointer;
+}
+
+.form-control:focus {
+    border-color: var(--honey-gold);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
+}
+
+.form-control--readonly {
+    background: var(--honeycomb-cream);
+    color: #999999;
+    cursor: not-allowed;
+}
+
+/* --- Regions section extras --- */
+.region-row--locked {
+    opacity: 0.85;
+}
+
+.region-status-locked {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: #999999;
+    font-style: italic;
+}
+
+.settings-default-region {
+    margin-top: 16px;
+}
+
+/* --- Random.org API key row --- */
+.input-with-action {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-with-action .form-control {
+    flex: 1;
+}
+
+.connection-badge-wrap {
+    margin-top: 12px;
+}
+
+/* --- Inline save feedback --- */
+.settings-feedback {
+    margin-top: 12px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.feedback--success {
+    background: #D4EDDA;
+    color: #155724;
+}
+
+.feedback--error {
+    background: #F8D7DA;
+    color: #721C24;
+}
+
+.form-hint {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: #999999;
+    margin-top: 6px;
+}
+
+.form-hint-inline {
+    font-size: 12px;
+    color: #999999;
+    margin-left: 6px;
+}
+
+/* --- Toast notifications --- */
+#admin-toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-toast {
+    background: var(--hive-brown);
+    color: var(--worker-white);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.admin-toast--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast--success {
+    background: #2E7D32;
+}
+
+.toast--error {
+    background: #B71C1C;
+}
+
+@media (max-width: 480px) {
+    .admin-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .admin-stats-row {
+        grid-template-columns: 1fr;
+    }
+}
