@@ -47,7 +47,7 @@ App.Admin.Controllers.WithdrawalController = class WithdrawalController {
 
         let data;
         try {
-            const response = await this._api.get('/api/v1/admin/withdrawals?status=' + encodeURIComponent(status));
+            const response = await this._api.get('/admin/withdrawals?status=' + encodeURIComponent(status));
             data = response.data || response;
         } catch (err) {
             $root.find('.admin-table-wrap').html(
@@ -239,7 +239,7 @@ App.Admin.Controllers.WithdrawalController = class WithdrawalController {
             $form.find('button').prop('disabled', true);
 
             try {
-                await self._api.mutate('PATCH', '/api/v1/admin/withdrawals/' + id, payload);
+                await self._api.mutate('PATCH', '/admin/withdrawals/' + id, payload);
                 await self._loadWithdrawals(self._currentStatus);
             } catch (err) {
                 alert('Error: ' + (err.message || 'Could not update withdrawal.'));
@@ -254,7 +254,7 @@ App.Admin.Controllers.WithdrawalController = class WithdrawalController {
             $btn.prop('disabled', true).text('Saving…');
 
             try {
-                await self._api.mutate('PATCH', '/api/v1/admin/withdrawals/' + id, { status: 'paid' });
+                await self._api.mutate('PATCH', '/admin/withdrawals/' + id, { status: 'paid' });
                 await self._loadWithdrawals(self._currentStatus);
             } catch (err) {
                 alert('Error: ' + (err.message || 'Could not mark withdrawal as paid.'));
@@ -338,7 +338,7 @@ App.Admin.Controllers.DrawController = class DrawController {
 
         let data;
         try {
-            const response = await this._api.get('/api/v1/admin/draws');
+            const response = await this._api.get('/admin/draws');
             data = response.data || response;
         } catch (err) {
             $('#admin-root .admin-table-wrap').html(
@@ -512,7 +512,7 @@ App.Admin.Controllers.DrawController = class DrawController {
             $form.find('button').prop('disabled', true);
 
             try {
-                await self._api.mutate('PATCH', '/api/v1/admin/swarms/' + swarmId, {
+                await self._api.mutate('PATCH', '/admin/swarms/' + swarmId, {
                     shipping_status:  'shipped',
                     tracking_number:  trackingNumber
                 });
@@ -574,7 +574,7 @@ App.Admin.Controllers.FinanceController = class FinanceController {
     async _loadFinance() {
         let data;
         try {
-            const response = await this._api.get('/api/v1/admin/finance');
+            const response = await this._api.get('/admin/finance');
             data = response.data || response;
         } catch (err) {
             $('#admin-root .finance-content').html(

@@ -393,7 +393,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
      * @returns {Promise<void>}
      */
     async _loadSettings() {
-        const res = await this._api.get('/api/v1/admin/settings');
+        const res = await this._api.get('/admin/settings');
         this._settings = (res && res.data) ? res.data : (res || {});
     }
 
@@ -402,7 +402,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
      * @returns {Promise<void>}
      */
     async _loadStaff() {
-        const res  = await this._api.get('/api/v1/admin/staff');
+        const res  = await this._api.get('/admin/staff');
         this._staff = (res && Array.isArray(res.data)) ? res.data : (Array.isArray(res) ? res : []);
     }
 
@@ -439,7 +439,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
             const $btn = $(this);
             $btn.prop('disabled', true).text('Deactivating…');
             try {
-                await self._api.mutate('PATCH', `/api/v1/admin/staff/${id}`, { is_active: 0 });
+                await self._api.mutate('PATCH', `/admin/staff/${id}`, { is_active: 0 });
                 await self._loadStaff();
                 self.renderStaffSection();
             } catch (err) {
@@ -454,7 +454,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
             const $btn = $(this);
             $btn.prop('disabled', true).text('Reactivating…');
             try {
-                await self._api.mutate('PATCH', `/api/v1/admin/staff/${id}`, { is_active: 1 });
+                await self._api.mutate('PATCH', `/admin/staff/${id}`, { is_active: 1 });
                 await self._loadStaff();
                 self.renderStaffSection();
             } catch (err) {
@@ -482,7 +482,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
             $btn.prop('disabled', true).text('Creating…');
 
             try {
-                await self._api.mutate('POST', '/api/v1/admin/staff', { name, email, password, role });
+                await self._api.mutate('POST', '/admin/staff', { name, email, password, role });
                 await self._loadStaff();
                 self.renderStaffSection();
                 self._showToast('Staff member created.', 'success');
@@ -503,7 +503,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
         $(document).on('change', '.js-us-region-toggle', async function () {
             const val = $(this).is(':checked') ? 1 : 0;
             try {
-                await self._api.mutate('PATCH', '/api/v1/admin/settings', { us_region_active: val });
+                await self._api.mutate('PATCH', '/admin/settings', { us_region_active: val });
                 if (self._settings) self._settings.us_region_active = val;
             } catch (err) {
                 // Revert the toggle on failure
@@ -519,7 +519,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
             $btn.prop('disabled', true).text('Saving…');
 
             try {
-                await self._api.mutate('PATCH', '/api/v1/admin/settings', { com_default_region: val });
+                await self._api.mutate('PATCH', '/admin/settings', { com_default_region: val });
                 if (self._settings) self._settings.com_default_region = val;
                 self._showFeedback('regions-feedback', 'Region settings saved.', 'success');
             } catch (err) {
@@ -565,7 +565,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
             $result.hide().html('');
 
             try {
-                const res = await self._api.get('/api/v1/admin/settings/test-random-org');
+                const res = await self._api.get('/admin/settings/test-random-org');
                 $result
                     .html(`<span class="connection-badge connection-badge--ok">Connected</span>`)
                     .show();
@@ -586,7 +586,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
             $btn.prop('disabled', true).text('Saving…');
 
             try {
-                await self._api.mutate('PATCH', '/api/v1/admin/settings', { random_org_api_key: key });
+                await self._api.mutate('PATCH', '/admin/settings', { random_org_api_key: key });
                 if (self._settings) self._settings.random_org_api_key = key;
                 self._showToast('Random.org API key saved.', 'success');
                 self._showFeedback('randomorg-feedback', 'Saved.', 'success');
@@ -624,7 +624,7 @@ App.Admin.Controllers.SettingsController = class SettingsController {
             $btn.prop('disabled', true).text('Saving…');
 
             try {
-                await self._api.mutate('PATCH', '/api/v1/admin/settings', {
+                await self._api.mutate('PATCH', '/admin/settings', {
                     margin_warning_threshold: marginRaw,
                     filling_fast_threshold:   fillingRaw
                 });

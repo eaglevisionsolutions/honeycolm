@@ -60,7 +60,7 @@ App.Admin.Controllers.ProductCatalogController = class ProductCatalogController 
      */
     async loadProducts(search = '', category = 'all') {
         const categoryParam = category === 'all' ? '' : category;
-        const path = `/api/v1/admin/products?search=${encodeURIComponent(search)}&category=${encodeURIComponent(categoryParam)}`;
+        const path = `/admin/products?search=${encodeURIComponent(search)}&category=${encodeURIComponent(categoryParam)}`;
 
         let products;
         try {
@@ -306,10 +306,10 @@ App.Admin.Controllers.ProductCatalogController = class ProductCatalogController 
         try {
             if (!this._editingId) {
                 // Create
-                await this._api.mutate('POST', '/api/v1/admin/products', payload);
+                await this._api.mutate('POST', '/admin/products', payload);
             } else {
                 // Update
-                await this._api.mutate('PATCH', `/api/v1/admin/products/${this._editingId}`, payload);
+                await this._api.mutate('PATCH', `/admin/products/${this._editingId}`, payload);
             }
         } catch (err) {
             const message = (err && err.message) ? err.message : 'Failed to save product. Please try again.';
@@ -376,7 +376,7 @@ App.Admin.Controllers.ProductCatalogController = class ProductCatalogController 
      */
     async reorderImage(productId, imageId, direction) {
         try {
-            await this._api.mutate('PATCH', `/api/v1/admin/products/${productId}/images/reorder`, {
+            await this._api.mutate('PATCH', `/admin/products/${productId}/images/reorder`, {
                 image_id: imageId,
                 direction
             });
@@ -416,7 +416,7 @@ App.Admin.Controllers.ProductCatalogController = class ProductCatalogController 
 
         actionsEl.querySelector('.image-delete-confirm__yes').addEventListener('click', async () => {
             try {
-                await this._api.mutate('DELETE', `/api/v1/admin/products/${productId}/images/${imageId}`, null);
+                await this._api.mutate('DELETE', `/admin/products/${productId}/images/${imageId}`, null);
             } catch (err) {
                 this._showModalError('Could not delete image. Please try again.');
                 actionsEl.innerHTML = originalHtml;
@@ -708,7 +708,7 @@ App.Admin.Controllers.ProductCatalogController = class ProductCatalogController 
 
         let product;
         try {
-            const response = await this._api.get(`/api/v1/admin/products/${productId}`);
+            const response = await this._api.get(`/admin/products/${productId}`);
             product = (response && response.data) ? response.data : response;
         } catch (_) {
             this._showModalError('Could not refresh image list.');
