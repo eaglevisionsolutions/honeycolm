@@ -22,7 +22,7 @@ window.App.Admin.Controllers = window.App.Admin.Controllers || {};
 
 App.Admin.Controllers.ProductCatalogController = class ProductCatalogController {
 
-    constructor() {
+    constructor(api) {
         /** @type {Array<Object>} Full product list from the last API fetch. */
         this._products = [];
 
@@ -33,7 +33,7 @@ App.Admin.Controllers.ProductCatalogController = class ProductCatalogController 
         this._editingId = null;
 
         /** @type {App.Services.ApiService} Shared API service instance. */
-        this._api = App.Services.ApiService.getInstance();
+        this._api = api || App.Services.ApiService.getInstance();
 
         /** @type {number|null} Debounce timer handle for the search input. */
         this._searchTimer = null;

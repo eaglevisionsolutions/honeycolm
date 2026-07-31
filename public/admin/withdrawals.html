@@ -23,6 +23,18 @@
         App.Admin.AuthService.guard();
     </script>
 
+    <!-- jQuery (required by some admin controllers) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+
+    <!-- Shared ApiService (used by several admin controllers) -->
+    <script>
+        window.App = window.App || {};
+        App.Services = App.Services || {};
+    </script>
+    <script src="/js/services/ApiService.js"></script>
+
     <!-- =============================================
          SIDEBAR
          ============================================= -->
@@ -154,20 +166,27 @@
         document.addEventListener('DOMContentLoaded', function () {
             var path = window.location.pathname;
             var ctrl;
+
+            // Dedicated ApiService instance carrying the admin JWT — the shared
+            // singleton reads the member 'access_token' key, which would send
+            // the wrong (or no) token on admin pages.
+            var adminApi = new App.Services.ApiService();
+            adminApi._token = App.Admin.AuthService.getToken();
+
             if (path.match(/\/admin\/(swarms|create-swarm)/)) {
                 ctrl = new App.Admin.Controllers.SwarmManagementController();
             } else if (path.match(/\/admin\/(products|catalog)/)) {
-                ctrl = new App.Admin.Controllers.ProductCatalogController();
+                ctrl = new App.Admin.Controllers.ProductCatalogController(adminApi);
             } else if (path.match(/\/admin\/members/)) {
                 ctrl = new App.Admin.Controllers.MemberManagementController();
             } else if (path.match(/\/admin\/withdrawals/)) {
-                ctrl = new App.Admin.Controllers.WithdrawalController();
+                ctrl = new App.Admin.Controllers.WithdrawalController(adminApi);
             } else if (path.match(/\/admin\/draws/)) {
-                ctrl = new App.Admin.Controllers.DrawController();
+                ctrl = new App.Admin.Controllers.DrawController(adminApi);
             } else if (path.match(/\/admin\/finance/)) {
-                ctrl = new App.Admin.Controllers.FinanceController();
+                ctrl = new App.Admin.Controllers.FinanceController(adminApi);
             } else if (path.match(/\/admin\/settings/)) {
-                ctrl = new App.Admin.Controllers.SettingsController();
+                ctrl = new App.Admin.Controllers.SettingsController(adminApi);
             } else {
                 ctrl = new App.Admin.Controllers.DashboardController();
             }
